@@ -10,14 +10,39 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Today's Money</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Transaksi Hari Ini</p>
                                     <h5 class="font-weight-bolder">
-                                        $53,000
+                                        12
                                     </h5>
-                                    <p class="mb-0">
+                                    {{-- <p class="mb-0">
+                                        <span class="text-danger text-sm font-weight-bolder">-2%</span>
+                                        since last quarter
+                                    </p> --}}
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Pendapatan hari ini </p>
+                                    <h5 class="font-weight-bolder">
+                                        Rp 120000
+                                    </h5>
+                                    {{-- <p class="mb-0">
                                         <span class="text-success text-sm font-weight-bolder">+55%</span>
                                         since yesterday
-                                    </p>
+                                    </p> --}}
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -35,14 +60,14 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Today's Users</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Laba Hari Ini</p>
                                     <h5 class="font-weight-bolder">
-                                        2,300
+                                        Rp 5000
                                     </h5>
-                                    <p class="mb-0">
+                                    {{-- <p class="mb-0">
                                         <span class="text-success text-sm font-weight-bolder">+3%</span>
                                         since last week
-                                    </p>
+                                    </p> --}}
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -54,32 +79,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card">
-                    <div class="card-body p-3">
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">New Clients</p>
-                                    <h5 class="font-weight-bolder">
-                                        +3,462
-                                    </h5>
-                                    <p class="mb-0">
-                                        <span class="text-danger text-sm font-weight-bolder">-2%</span>
-                                        since last quarter
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-4 text-end">
-                                <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-                                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
+            
+            {{-- <div class="col-xl-3 col-sm-6">
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
@@ -102,9 +103,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
-        <div class="row mt-4">
+        {{-- <div class="row mt-4">
             <div class="col-lg-7 mb-lg-0 mb-4">
                 <div class="card z-index-2 h-100">
                     <div class="card-header pb-0 pt-3 bg-transparent">
@@ -170,8 +171,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-4">
+        </div> --}}
+        {{-- <div class="row mt-4">
             <div class="col-lg-7 mb-lg-0 mb-4">
                 <div class="card ">
                     <div class="card-header pb-0 p-3">
@@ -389,7 +390,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         @include('layouts.footers.auth.footer')
     </div>
 @endsection

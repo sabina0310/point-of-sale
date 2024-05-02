@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 
 class DataController extends Controller
 {
@@ -13,23 +14,40 @@ class DataController extends Controller
     {
         $eloquent = null;
         if (!empty(request()->input('id'))) {
-            $eloquent =  Category::find(request()->input('id'));
+            $eloquent =  Product::find(request()->input('id'));
         }
 
         try {
             DB::connection('mysql')->beginTransaction();
 
             if (!isset($eloquent)) {
-                $eloquent = new Category;
+                $eloquent = new Product();
                 $eloquent->name = request()->input('name');
+                $eloquent->category_id = request()->input('category_id');
+                $eloquent->purchase_unit = request()->input('purchase_unit');
+                $eloquent->purchase_price = request()->input('purchase_price');
+                $eloquent->quantity_per_purchase_unit = request()->input('quantity_per_purchase_unit');
+                $eloquent->price_per_purchase_item = request()->input('price_per_purchase_item');
+                $eloquent->selling_unit = request()->input('selling_unit');
+                $eloquent->selling_price = request()->input('selling_price');
+                $eloquent->stock = 0;
                 $eloquent->save();
                 DB::connection('mysql')->commit();
-                return back()->with('success', 'Berhasil menambahkan data kategori');
+                return redirect()->route('product')->with('success', 'Berhasil menambahkan data produk');
+                // return back()->with('success', 'Berhasil menambahkan data produk');
             } else {
                 $eloquent->name = request()->input('name');
+                $eloquent->category_id = request()->input('category_id');
+                $eloquent->purchase_unit = request()->input('purchase_unit');
+                $eloquent->purchase_price = request()->input('purchase_price');
+                $eloquent->quantity_per_purchase_unit = request()->input('quantity_per_purchase_unit');
+                $eloquent->price_per_purchase_item = request()->input('price_per_purchase_item');
+                $eloquent->selling_unit = request()->input('selling_unit');
+                $eloquent->selling_price = request()->input('selling_price');
                 $eloquent->save();
                 DB::connection('mysql')->commit();
-                return back()->with('success', 'Berhasil mengubah data kategori');
+                return redirect()->route('product')->with('success', 'Berhasil mengubah data produk');
+                // return back()->with('success', 'Berhasil mengubah data produk');
             }
         } catch (\Exception $e) {
             DB::connection('mysql')->rollback();
@@ -60,12 +78,12 @@ class DataController extends Controller
         try {
             DB::connection('mysql')->beginTransaction();
 
-            $data = Category::findOrFail($request->input('id'));
+            $data = Product::findOrFail($request->input('id'));
 
             $data->delete();
 
             DB::connection('mysql')->commit();
-            return back()->with('success', 'Berhasil menghapus kategori');
+            return back()->with('success', 'Berhasil menghapus produk');
         } catch (\Exception $e) {
             DB::connection('mysql')->rollback();
             return $this->error_handler($e);

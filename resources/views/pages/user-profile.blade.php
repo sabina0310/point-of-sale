@@ -2,7 +2,7 @@
 
 @section('content')
     @include('layouts.navbars.auth.topnav', ['title' => 'Your Profile'])
-    <div class="card shadow-lg mx-4 card-profile-bottom">
+    {{-- <div class="card shadow-lg mx-4 card-profile-bottom">
         <div class="card-body p-3">
             <div class="row gx-4">
                 <div class="col-auto">
@@ -49,13 +49,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div id="alert">
         @include('components.alert')
     </div>
     <div class="container-fluid py-4">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
                     <form role="form" method="POST" action={{ route('profile.update') }} enctype="multipart/form-data">
                         @csrf
@@ -93,9 +93,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <hr class="horizontal dark">
-                            <p class="text-uppercase text-sm">Contact Information</p>
-                            <div class="row">
+                            {{-- <hr class="horizontal dark">
+                            <p class="text-uppercase text-sm">Contact Information</p> --}}
+                            {{-- <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="example-text-input" class="form-control-label">Address</label>
@@ -121,8 +121,8 @@
                                         <input class="form-control" type="text" name="postal" value="{{ old('postal', auth()->user()->postal) }}">
                                     </div>
                                 </div>
-                            </div>
-                            <hr class="horizontal dark">
+                            </div> --}}
+                            {{-- <hr class="horizontal dark">
                             <p class="text-uppercase text-sm">About me</p>
                             <div class="row">
                                 <div class="col-md-12">
@@ -132,12 +132,12 @@
                                             value="{{ old('about', auth()->user()->about) }}">
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="col-md-4">
+            {{-- <div class="col-md-4">
                 <div class="card card-profile">
                     <img src="/img/bg-profile.jpg" alt="Image placeholder" class="card-img-top">
                     <div class="row justify-content-center">
@@ -196,7 +196,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         @include('layouts.footers.auth.footer')
     </div>
