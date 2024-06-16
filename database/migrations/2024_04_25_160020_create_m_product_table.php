@@ -20,11 +20,10 @@ return new class extends Migration
             $table->integer('purchase_price');
             $table->string('quantity_per_purchase_unit');
             $table->integer('price_per_purchase_item');
-            $table->string('selling_unit');
-            $table->integer('selling_price');
+            $table->string('sale_unit');
+            $table->integer('sale_price');
             $table->integer('stock');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->index('name');
         });

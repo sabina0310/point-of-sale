@@ -18,59 +18,16 @@
                         <div class="ms-md-auto pe-md-3 d-flex">
                             <div class="input-group">
                                 <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" placeholder="Type here...">
+                                <input type="text" class="form-control" placeholder="Cari berdasarkan nama" oninput="filterSearch(this.value)">
                             </div>
                         </div>
                         <button class="btn btn-primary btn-sm mb-0" onclick="openModalFormInsert()"><i class="fas fa-plus me-2"></i>Tambah</button>
                     </div>
 
                     <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                 <thead>
-                                    <tr>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 5%">
-                                            No </th>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 75%">
-                                            Nama Kategori</th>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ( $listCategory as $i => $value)
-                                        <tr>
-                                            <td class="align-middle text-left text-xl font-weight-bold">
-                                                <span class="ms-3">
-                                                    {{ $loop->index + 1 + ($listCategory->perPage() * ($listCategory->currentPage() - 1)) }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-left text-xl font-weight-bold">
-                                                <span class="ms-3">
-                                                    {{ $value->name }}
-                                                </span>
-                                            </td>
-                                            <td class="d-flex align-middle text-left text-xl font-weight-bold">
-                                                <button class="btn btn-link text-secondary mb-0" onclick="openModalFormEdit({{ $value->id }})">
-                                                    <i class="fa fa-edit text-xs" aria-hidden="true"></i>
-                                                </button>
-                                                <form action="/category" method="post" id="delete-form-{{ $value->id }}"">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <input hidden type="text" name="id" value="{{ $value->id }}">
-                                                    <button type="button" class="btn btn-link text-secondary mb-0" onclick="deleteData({{ $value->id }})">
-                                                        <i class="fa fa-trash text-xs" aria-hidden="true"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                       <div id="table-list-category">
 
-                            <div class="px-3 pt-3">
-                                {!! $listCategory->links('vendor.pagination.bootstrap-5') !!}
-                            </div>
-                        </div>
+                       </div>
                     </div>
                 </div>
             </div>
@@ -80,6 +37,37 @@
 
 @section('script')
     <script>
+        function filterData(search = null, page = null) {
+            $.ajax({
+                url: "{{ route('category.filter') }}",
+                type: 'GET',
+                data: {
+                    search: search,
+                    page: page
+                },
+                success: function(data) {
+                    $('#table-list-category').html(data);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function filterSearch(search) {
+            filterData(search);
+        }
+
+        $(document).ready(function() {
+            filterData();
+        });
+
+        $(document).on('click', '#table-data .pagination a', function(e) {
+            e.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            filterData(null, page);
+        });
+
         function openModalFormInsert(){
             $('#modal-form #modal-form-title').text("Tambah Kategori");
             $('#modal-form #id').val('');

@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $table = 'm_product';
     protected $fillable = [
         'name',
@@ -18,8 +17,8 @@ class Product extends Model
         'purchase_price',
         'quantity_per_purchase_unit',
         'price_per_purchase_item',
-        'selling_unit',
-        'selling_price',
+        'sale_unit',
+        'sale_price',
         'stock'
     ];
 

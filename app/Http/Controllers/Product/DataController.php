@@ -2,16 +2,46 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use Illuminate\Support\Facades\Validator;
 
 class DataController extends Controller
 {
-    public function submit()
+    public function submit(Request $request)
     {
+        $messages = [
+            'category_id.required' => 'Kategori produk wajib diisi.',
+            'name.required' => 'Nama produk wajib diisi.',
+            'purchase_unit.required' => 'Satuan beli wajib diisi.',
+            'purchase_price.required' => 'Harga beli wajib diisi.',
+            'quantity_per_purchase_unit.required' => 'Isi per satuan beli wajib diisi.',
+            'quantity_per_purchase_unit.required' => 'Isi per satuan beli wajib diisi.',
+            'price_per_purchase_item.required' => 'Harga per item wajib diisi.',
+            'sale_unit.required' => 'Satuan jual wajib diisi.',
+            'sale_price.required' => 'Harga jual wajib diisi.',
+            // Add more custom messages as needed
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'required',
+            'name' => 'required',
+            'purchase_unit' => 'required',
+            'purchase_price' => 'required',
+            'quantity_per_purchase_unit' => 'required',
+            'quantity_per_purchase_unit' => 'required',
+            'price_per_purchase_item' => 'required',
+            'sale_unit' => 'required',
+            'sale_price' => 'required',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()],  422);
+        }
+
         $eloquent = null;
         if (!empty(request()->input('id'))) {
             $eloquent =  Product::find(request()->input('id'));
@@ -28,12 +58,12 @@ class DataController extends Controller
                 $eloquent->purchase_price = request()->input('purchase_price');
                 $eloquent->quantity_per_purchase_unit = request()->input('quantity_per_purchase_unit');
                 $eloquent->price_per_purchase_item = request()->input('price_per_purchase_item');
-                $eloquent->selling_unit = request()->input('selling_unit');
-                $eloquent->selling_price = request()->input('selling_price');
+                $eloquent->sale_unit = request()->input('sale_unit');
+                $eloquent->sale_price = request()->input('sale_price');
                 $eloquent->stock = 0;
                 $eloquent->save();
                 DB::connection('mysql')->commit();
-                return redirect()->route('product')->with('success', 'Berhasil menambahkan data produk');
+                return response()->json(['success' => true, 'message' => 'Berhasil menambah data produk']);
                 // return back()->with('success', 'Berhasil menambahkan data produk');
             } else {
                 $eloquent->name = request()->input('name');
@@ -42,11 +72,11 @@ class DataController extends Controller
                 $eloquent->purchase_price = request()->input('purchase_price');
                 $eloquent->quantity_per_purchase_unit = request()->input('quantity_per_purchase_unit');
                 $eloquent->price_per_purchase_item = request()->input('price_per_purchase_item');
-                $eloquent->selling_unit = request()->input('selling_unit');
-                $eloquent->selling_price = request()->input('selling_price');
+                $eloquent->sale_unit = request()->input('sale_unit');
+                $eloquent->sale_price = request()->input('sale_price');
                 $eloquent->save();
                 DB::connection('mysql')->commit();
-                return redirect()->route('product')->with('success', 'Berhasil mengubah data produk');
+                return response()->json(['success' => true, 'message' => 'Berhasil mengubah data produk']);
                 // return back()->with('success', 'Berhasil mengubah data produk');
             }
         } catch (\Exception $e) {

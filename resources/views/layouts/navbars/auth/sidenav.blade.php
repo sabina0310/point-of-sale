@@ -22,10 +22,7 @@
                 </a>
             </li>
             <li class="nav-item mt-3 d-flex align-items-center">
-                <div class="ps-4">
-                    {{-- <i class="fab fa-laravel" style="color: #f4645f;"></i> --}}
-                </div>
-                <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">Transaksi</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">Transaksi</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'purchase' ? 'active' : '' }}" href="{{ route('purchase') }}">
@@ -34,6 +31,36 @@
                         <i class="fas fa-layer-group text-dark text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Pembelian</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'sale' ? 'active' : '' }}" href="{{ route('sale') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-layer-group text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Penjualan</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'sale-history' ? 'active' : '' }}" href="{{ route('sale-history') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-layer-group text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Riwayat Penjualan</span>
+                </a>
+            </li>
+            <li class="nav-item mt-3 d-flex align-items-center">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">Laporan</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'report-sale' ? 'active' : '' }}" href="{{ route('report-sale') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-layer-group text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Laporan Penjualan</span>
                 </a>
             </li>
             <li class="nav-item mt-3 d-flex align-items-center">

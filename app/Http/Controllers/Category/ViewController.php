@@ -10,7 +10,20 @@ class ViewController extends Controller
 {
     public function index()
     {
-        $data['listCategory'] = Category::paginate(2);
+        return view('pages.category.index');
+    }
+
+    public function filter(Request $request)
+    {
+        $filter = $request->all();
+        $data['listCategory'] = Category::when(!empty($filter['search']), function ($query) use ($filter) {
+            return $query->where('name', 'like', '%' . $filter['search'] . '%');
+        })->paginate(2);
+
+        if ($request->ajax()) {
+            return view('pages.category.partials.tableListCategory', $data);
+        }
+
         return view('pages.category.index', $data);
     }
 }

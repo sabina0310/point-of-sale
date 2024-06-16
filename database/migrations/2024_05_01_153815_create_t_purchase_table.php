@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->integer('product_id');
             $table->foreign('product_id')->references('id')->on('m_product');
-            $table->integer('quantity');
+            $table->integer('purchase_quantity');
+            $table->integer('purchase_stock');
             $table->integer('total_price');
             $table->date('date');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

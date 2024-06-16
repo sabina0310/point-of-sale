@@ -6,8 +6,60 @@
 
 @section('content')
     @include('layouts.navbars.auth.topnav', ['title' => 'Produk'])
-<div class="container-fluid py-4">
+    <div class="container-fluid py-4">
         <div class="row">
+            <div class="col-md-4 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Produk</p>
+                                    <h5 class="font-weight-bolder">
+                                        5
+                                    </h5>
+                                    {{-- <p class="mb-0">
+                                        <span class="text-danger text-sm font-weight-bolder">-2%</span>
+                                        since last quarter
+                                    </p> --}}
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Produk Stok < 3</p>
+                                    <h5 class="font-weight-bolder">
+                                        0
+                                    </h5>
+                                    {{-- <p class="mb-0">
+                                        <span class="text-danger text-sm font-weight-bolder">-2%</span>
+                                        since last quarter
+                                    </p> --}}
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
             <div class="col-12">
                 <div class="card mb-4">
                     <div id="alert">
@@ -18,87 +70,15 @@
                         <div class="ms-md-auto pe-md-3 d-flex">
                             <div class="input-group">
                                 <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" placeholder="Type here...">
+                                <input type="text" class="form-control" placeholder="Cari nama produk" oninput="filterSearch(this.value)">
                             </div>
                         </div>
                         <a href="{{ route('product.create') }}" class="btn btn-primary btn-sm mb-0"><i class="fas fa-plus me-2"></i>Tambah</a>
                     </div>
 
                     <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                 <thead>
-                                    <tr>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 5%">
-                                            No </th>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 30%">
-                                            Nama Produk</th>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 15%">
-                                            Kategori</th>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 10%">
-                                            Harga Beli</th>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 10%">
-                                            Harga Jual</th>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 10%">
-                                            Stok</th>
-                                        <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ( $listProduct as $i => $data)
-                                        <tr>
-                                            <td class="align-middle text-left text-xl font-weight-bold">
-                                                <span class="ms-3">
-                                                    {{ $loop->index + 1 + ($listProduct->perPage() * ($listProduct->currentPage() - 1)) }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-left text-xl font-weight-bold">
-                                                <span class="ms-3">
-                                                    {{ $data->name }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-left text-xl font-weight-bold">
-                                                <span class="ms-3">
-                                                    {{ $data->category_name }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-left text-xl font-weight-bold">
-                                                <span class="ms-3">
-                                                    {{ $data->price_per_purchase_item }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-left text-xl font-weight-bold">
-                                                <span class="ms-3">
-                                                    {{ $data->selling_price }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-left text-xl font-weight-bold">
-                                                <span class="ms-3">
-                                                    {{ $data->stock }}
-                                                </span>
-                                            </td>
-                                            <td class="d-flex align-middle text-left text-xl font-weight-bold">
-                                                <a href="{{ route('product.edit', ['id' => $data->id]) }}" class="btn btn-link text-secondary mb-0">
-                                                    <i class="fa fa-edit text-xs" aria-hidden="true"></i>
-                                                </a>
+                        <div id="table-list-product">
 
-                                                <form action="/product" method="post" id="delete-form-{{ $data->id }}"">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <input hidden type="text" name="id" value="{{ $data->id }}">
-                                                    <button type="button" class="btn btn-link text-secondary mb-0" onclick="deleteData({{ $data->id }})">
-                                                        <i class="fa fa-trash text-xs" aria-hidden="true"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
-                            <div class="px-3 pt-3">
-                                {!! $listProduct->links('vendor.pagination.bootstrap-5') !!}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,22 +89,53 @@
 
 @section('script')
 <script>
+
+    function filterData(search = null, page = null) {
+        $.ajax({
+            url: "{{ route('product.filter') }}",
+            type: 'GET',
+            data: {
+                search: search,
+                page: page
+            },
+            success: function(data) {
+                $('#table-list-product').html(data);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        filterData();
+    });
+
+    function filterSearch(search) {
+        filterData(search);
+    }
+
+    $(document).on('click', '#table-data .pagination a', function(e) {
+        e.preventDefault();
+        var page = $(this).attr('href').split('page=')[1];
+        filterData(null, page);
+    });
+
     function deleteData(id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Once deleted, you will not be able to recover this data!',
-                icon: 'warning',
-                buttons: {
-                    cancel: 'Cancel',
-                    confirm: 'Delete'
-                },
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
+        Swal.fire({
+        title: 'Apakah Anda yakin ingin menghapus data ini?',
+        text: 'Data ini tidak bisa dipulihkan setelah dihapus!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        dangerMode: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
                     $('#delete-form-' + id).submit();
                 }
             });
-        }
+    }
 </script>
 
 @endsection

@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'm_user';
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -22,12 +25,7 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'email',
-        'password',
-        'address',
-        'city',
-        'country',
-        'postal',
-        'about'
+        'password'
     ];
 
     /**
@@ -36,8 +34,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password'
+        // 'remember_token',
     ];
 
     /**
@@ -53,8 +51,8 @@ class User extends Authenticatable
      * Always encrypt the password when it is updated.
      *
      * @param $value
-    * @return string
-    */
+     * @return string
+     */
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
