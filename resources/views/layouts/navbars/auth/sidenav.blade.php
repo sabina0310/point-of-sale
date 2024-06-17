@@ -63,11 +63,9 @@
                     <span class="nav-link-text ms-1">Laporan Penjualan</span>
                 </a>
             </li>
+            @if(Auth::user()->role == 'admin')
             <li class="nav-item mt-3 d-flex align-items-center">
-                <div class="ps-4">
-                    {{-- <i class="fab fa-laravel" style="color: #f4645f;"></i> --}}
-                </div>
-                <h6 class="ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">Master</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0">Master</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'category' ? 'active' : '' }}" href="{{ route('category') }}">
@@ -86,6 +84,10 @@
                     </div>
                     <span class="nav-link-text ms-1">Produk</span>
                 </a>
+            </li>
+            @endif
+            <li class="nav-item mt-3 d-flex align-items-center">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mb-0"></h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'profile' ? 'active' : '' }}" href="{{ route('profile') }}">

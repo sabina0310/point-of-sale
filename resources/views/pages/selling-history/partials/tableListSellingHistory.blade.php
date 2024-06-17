@@ -66,9 +66,12 @@
                                 </form>
                             @endif
                             @if ($data->status == 'success')
-                            <a href="{{ route('sale.generate-receipt') }}" class="btn btn-link text-secondary mb-0" onclick="openModalFormEdit({{ $data->id }})">
-                                <i class="fa fa-print text-xs" style="color: darkblue" aria-hidden="true" title="Print nota transaksi"></i>
-                            </a>
+                            <form action="{{ route('generate-receipt') }}" method="GET" target="_blank" style="display: inline;">
+                                <input type="hidden" name="invoice_number" value="{{ $data->invoice_number }}">
+                                <button type="submit" class="btn btn-link text-secondary mb-0" style="border: none; background: none;">
+                                    <i class="fa fa-print text-xs" style="color: darkblue" aria-hidden="true" title="Print nota transaksi"></i>
+                                </button>
+                            </form>
                             @endif
                         </td>
                     </tr>

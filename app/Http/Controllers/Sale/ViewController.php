@@ -87,15 +87,5 @@ class ViewController extends Controller
         return view('pages.selling.index', $data);
     }
 
-    public function generateReceipt()
-    {
-        $data = [
-            'title' => 'Welcome to Laravel PDF Tutorial',
-            'date' => date('m/d/Y')
-        ];
-
-        $pdf = PDF::loadView('export.generateInvoice', $data);
-
-        return $pdf->download('document.pdf');
-    }
+    
 }

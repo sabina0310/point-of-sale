@@ -10,15 +10,20 @@
                     <div id="alert">
                         @include('components.alert')
                     </div>
-                    <div class="card-header pb-3 d-flex align-items-center">
+                    <div class="card-header pb-3">
                         <h5>Laporan Penjualan</h5>
-                        {{-- <div class="ms-md-auto pe-md-3 d-flex w-30">
-                            <div class="input-group">
-                                <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" placeholder="Cari berdasarkan nama produk" oninput="filterSearch(this.value)">
+                        <div class="input-group input-daterange d-flex justify-content-center ">
+                            <div class="w-20">
+                                <input type="month" class="form-control" value="" id="start-date-transaction" onchange="filterDateTransaction(this.value)">
                             </div>
-                        </div> --}}
-                        {{-- <a href="{{ route('purchase.create') }}" class="btn btn-primary btn-sm mb-0" onclick="openModalFormInsert()"><i class="fas fa-plus me-2"></i>Tambah</a> --}}
+                            <span class="mx-2"> - </span>
+                            <div class="w-20">
+                                <input type="month" class="form-control" value="" id="end-date-transaction" onchange="filterDateTransaction(this.value)">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-3">
+                            <a href="{{ route('purchase.create') }}" class="btn btn-primary btn-sm mb-0 w-12" onclick="openModalFormInsert()"><i class="fas fa-file-pdf me-2"></i>PDF</a>
+                        </div>
                     </div>
 
                     <div class="card-body px-0 pt-0 pb-2">

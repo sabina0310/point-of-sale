@@ -38,7 +38,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ResetPassword;
 use App\Http\Controllers\ChangePassword;
-
+use App\Http\Controllers\Generate\ReceiptController;
 
 Route::get('/', function () {
 	return redirect('/dashboard');
@@ -55,10 +55,11 @@ Route::post('/change-password', [ChangePassword::class, 'update'])->middleware('
 
 Route::group(['middleware' => 'auth'], function () {
 
+	Route::get('/generate-receipt', [ReceiptController::class, 'generateReceipt'])->name('generate-receipt');
+
 	Route::prefix('report-sale')->group(function () {
 		Route::get('/', [ReportSaleViewController::class, 'index'])->name('report-sale');
 		Route::get('/filter', [ReportSaleViewController::class, 'filter'])->name('report-sale.filter');
-
 	});
 
 	Route::prefix('dashboard')->group(function () {
@@ -83,15 +84,12 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/filter', [SaleViewController::class, 'filter'])->name('sale.filter');
 		Route::get('/receipt', [SaleViewController::class, 'receiptProduct'])->name('sale.receipt');
 
-		Route::get('/generate', [SaleDataController::class, 'generateInvoiceNumber'])->name('sale.generate');
-
+		// Route::get('/generate', [SaleDataController::class, 'generateInvoiceNumber'])->name('sale.generate');
 
 		Route::post('/', [SaleDataController::class, 'submit'])->name('sale.submit');
 		Route::post('/create', [SaleDataController::class, 'submitProduct'])->name('sale.submit-product');
 		Route::delete('/cancel', [SaleDataController::class, 'cancel'])->name('sale.cancel');
 		Route::delete('/delete-cart-product', [SaleDataController::class, 'deleteCartProduct'])->name('sale.delete-cart-product');
-		Route::get('/generate-receipt', [SaleViewController::class, 'generateReceipt'])->name('sale.generate-receipt');
-
 	});
 
 	Route::prefix('purchase')->group(function () {
@@ -110,26 +108,30 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/{id}/product', [PurchaseDataController::class, 'showProduct'])->name('purchase.product');
 	});
 
-	Route::prefix('product')->group(function () {
-		Route::get('/', [ProductViewController::class, 'index'])->name('product');
-		Route::get('/filter', [ProductViewController::class, 'filter'])->name('product.filter');
-		Route::get('/{id}/show', [ProductDataController::class, 'show'])->name('product.show');
-		Route::delete('/', [ProductDataController::class, 'delete'])->name('product.delete');
+	Route::middleware('role:admin')->group(function () {
 
-		Route::get('/create', [ProductViewController::class, 'form'])->name('product.create');
-		Route::get('/{id}/edit', [ProductViewController::class, 'form'])->name('product.edit');
+		Route::prefix('product')->group(function () {
+			Route::get('/', [ProductViewController::class, 'index'])->name('product');
+			Route::get('/filter', [ProductViewController::class, 'filter'])->name('product.filter');
+			Route::get('/{id}/show', [ProductDataController::class, 'show'])->name('product.show');
+			Route::delete('/', [ProductDataController::class, 'delete'])->name('product.delete');
 
-		Route::post('/create', [ProductDataController::class, 'submit'])->name('product.create-submit');
-		Route::post('/{id}/edit', [ProductDataController::class, 'submit'])->name('product.edit-submit');
+			Route::get('/create', [ProductViewController::class, 'form'])->name('product.create');
+			Route::get('/{id}/edit', [ProductViewController::class, 'form'])->name('product.edit');
+
+			Route::post('/create', [ProductDataController::class, 'submit'])->name('product.create-submit');
+			Route::post('/{id}/edit', [ProductDataController::class, 'submit'])->name('product.edit-submit');
+		});
+
+		Route::prefix('category')->group(function () {
+			Route::get('/', [CategoryViewController::class, 'index'])->name('category');
+			Route::get('/filter', [CategoryViewController::class, 'filter'])->name('category.filter');
+			Route::post('/', [CategoryDataController::class, 'submit'])->name('category.submit');
+			Route::get('/{id}/show', [CategoryDataController::class, 'show'])->name('category.show');
+			Route::delete('/', [CategoryDataController::class, 'delete'])->name('category.delete');
+		});
 	});
 
-	Route::prefix('category')->group(function () {
-		Route::get('/', [CategoryViewController::class, 'index'])->name('category');
-		Route::get('/filter', [CategoryViewController::class, 'filter'])->name('category.filter');
-		Route::post('/', [CategoryDataController::class, 'submit'])->name('category.submit');
-		Route::get('/{id}/show', [CategoryDataController::class, 'show'])->name('category.show');
-		Route::delete('/', [CategoryDataController::class, 'delete'])->name('category.delete');
-	});
 
 	Route::get('/virtual-reality', [PageController::class, 'vr'])->name('virtual-reality');
 	Route::get('/rtl', [PageController::class, 'rtl'])->name('rtl');

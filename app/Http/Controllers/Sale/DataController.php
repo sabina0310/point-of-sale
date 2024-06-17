@@ -59,7 +59,7 @@ class DataController extends Controller
 
             if (!$eloquent) {
                 if ($quantity > $eloquentProduct->stock) {
-                    return response()->json(['success' => false, 'message' => 'Jumlah produk melebihi stok']);
+                    return response()->json(['errors' => 'Jumlah produk melebihi stok'], 422);
                 }
 
                 $eloquent = new Sale;
@@ -96,7 +96,7 @@ class DataController extends Controller
                 } else {
                     $totalQuantity = $eloquentSaleDetail->quantity + $quantity;
                     if ($totalQuantity > $eloquentProduct->stock) {
-                        return response()->json(['success' => false, 'message' => 'Jumlah produk melebihi stok']);
+                        return response()->json(['errors' => 'Jumlah produk melebihi stok'], 422);
                     }
 
                     $eloquentSaleDetail->quantity += $quantity;

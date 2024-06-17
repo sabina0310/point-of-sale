@@ -1,7 +1,7 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('modal')
-    @include('pages.category.partials.modal-form')
+    @include('pages.product.partials.modalStock')
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col-8" >
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Produk</p>
                                     <h5 class="font-weight-bolder">
@@ -29,6 +29,9 @@
                                     <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
                                 </div>
                             </div>
+                            <div>
+                                <p hidden> dfd</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -37,22 +40,23 @@
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col-8" onclick="openModalStock()" style="cursor: pointer">
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Produk Stok < 3</p>
                                     <h5 class="font-weight-bolder">
                                         0
                                     </h5>
-                                    {{-- <p class="mb-0">
-                                        <span class="text-danger text-sm font-weight-bolder">-2%</span>
-                                        since last quarter
-                                    </p> --}}
                                 </div>
                             </div>
                             <div class="col-4 text-end">
                                 <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
                                     <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
                                 </div>
+                            </div>
+                            <div>
+                                <p class="mb-0">
+                                        <span class="text-danger text-sm font-weight-bolder">Stok menipis segera lakukan pembelian!</span>
+                                    </p>
                             </div>
                         </div>
                     </div>
@@ -135,6 +139,13 @@
                     $('#delete-form-' + id).submit();
                 }
             });
+    }
+
+    function openModalStock(){
+        console.log('ya');
+        $('#modal-stock #id').val('');
+        $('#modal-stock #name').val('');
+        $('#modal-stock').modal('show');
     }
 </script>
 

@@ -136,38 +136,17 @@
                 success: function(response) {
                     if (response.success) {
                         receiptProduct();
-                    } else {
-                        Swal.fire({
-                            title: response.message,
-                            icon: "error"
-                        });
-                    }
+                    } 
                 },
                 error: function(error) {
+                    Swal.fire({
+                            title: error.responseJSON.errors,
+                            icon: "error"
+                    });
                     console.error('Terjadi kesalahan: ', error);
                 }
             });
         }
-
-        function generateInvoice() {
-            $.ajax({
-                url: "{{ route('sale.generate') }}",
-                method: 'GET',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    console.log(response.data);
-                    // Remove the row from the DOM
-                    $('#invoice-number').text(response.data);
-
-                    // Optionally, you can show a success message or perform other actions here
-                },
-                error: function(error) {
-                    console.error('An error occurred:', error);
-                }
-            });
-        }   
 
         function deleteCartProduct(id) {
             console.log(id);
