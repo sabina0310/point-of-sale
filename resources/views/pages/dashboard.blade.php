@@ -14,15 +14,11 @@
                                     <h5 class="font-weight-bolder">
                                         {{ $todaysTransaction }}
                                     </h5>
-                                    {{-- <p class="mb-0">
-                                        <span class="text-danger text-sm font-weight-bolder">-2%</span>
-                                        since last quarter
-                                    </p> --}}
                                 </div>
                             </div>
                             <div class="col-4 text-end">
                                 <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-                                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                                    <i class="fas fa-cash-register text-lg opacity-10" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -39,10 +35,6 @@
                                     <h5 class="font-weight-bolder">
                                         Rp {{ number_format($todaysSale, 0, '.', '.') }}
                                     </h5>
-                                    {{-- <p class="mb-0">
-                                        <span class="text-success text-sm font-weight-bolder">+55%</span>
-                                        since yesterday
-                                    </p> --}}
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -64,15 +56,11 @@
                                     <h5 class="font-weight-bolder">
                                         Rp {{ number_format($todaysProfit, 0, '.', '.') }}
                                     </h5>
-                                    {{-- <p class="mb-0">
-                                        <span class="text-success text-sm font-weight-bolder">+3%</span>
-                                        since last week
-                                    </p> --}}
                                 </div>
                             </div>
                             <div class="col-4 text-end">
                                 <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
-                                    <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                                    <i class="fas fa-wallet text-lg opacity-10" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -112,11 +100,11 @@
                         <h6 class="text-capitalize">Transaksi Bulan Ini</h6>
                         <div class="input-group input-daterange d-flex justify-content-center">
                             <div class="w-35">
-                                <input type="month" class="form-control" value="" id="start-date-transaction" onchange="filterDateTransaction(this.value)">
+                                <input type="month" class="form-control" value="" id="start-date-transaction" onchange="filterDateTransaction()">
                             </div>
                             <span class="mx-2"> - </span>
                             <div class="w-35">
-                                <input type="month" class="form-control" value="" id="end-date-transaction" onchange="filterDateTransaction(this.value)">
+                                <input type="month" class="form-control" value="" id="end-date-transaction" onchange="filterDateTransaction()">
                             </div>
                         </div>
                     </div>
@@ -613,7 +601,7 @@
             // console.log(endDate);
         }
 
-        function filterDateTransaction(date){
+        function filterDateTransaction(){
             var startDateTransaction = $('#start-date-transaction').val();
             var endDateTransaction = $('#end-date-transaction').val();
 

@@ -6,133 +6,115 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Invoice</title>
     <style>
+        @page { 
+            width: 13cm;
+            margin: 0px; 
+            scale: 100%}
+        body {  
+            
+        }
         .container {
-            width: 189px;
+            width: 13cm;
+            padding: 0;
+            margin-left: 5px; 
+            font-size: 24px; /* Adjust font size as needed */
         }
         .header {
-            margin: 0;
+            margin-bottom: 10px;
             text-align: center;
         }
-        h2, p {
+        .header h2 {
             margin: 0;
         }
-        .flex-container-1 {
-            display: flex;
-            margin-top: 10px;
-        }
-
-        .flex-container-1 > div {
-            text-align : left;
-        }
-        .flex-container-1 .right {
-            text-align : right;
-            width: 109px;
-        }
-        .flex-container-1 .left {
-            width: 80px;
-        }
-        .flex-container {
-            display: flex;
-        }
-
-        .flex-container > div {
-            flex: 1;
-        }
-
-        .flex-container-2 {
-            display: flex;
-            margin-top: 10px;
-        }
-
-        .flex-container-2 > div {
-            text-align : left;
-        }
-        .flex-container-2 .right {
-            text-align : right;
-            width: 109px;
-        }
-        .flex-container-2 .left {
-            width: 80px;
-            margin-left: 30px
-        }
-        ul {
-            display: contents;
-        }
-        ul li {
+        .header small {
             display: block;
-            font-size: 15px
+            font-size: 11px;
+        }
+        .content {
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+        }
+        table th, table td {
+            padding: 5px;
+        }
+        table th {
+            text-align: left;
+        }
+        .table-1 td {
+            text-align: right ;
+        }
+        .table-2 th {
+            padding-left: 65px ;
+        }
+        .table-2 td {
+            text-align: right ;
         }
         hr {
             border-style: dashed;
-        }
-        a {
-            text-decoration: none;
-            text-align: center;
-            padding: 10px;
-            background: #00e676;
-            border-radius: 5px;
-            color: white;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header" style="margin-bottom: 30px;">
-            <h2>Toko Pimny</h2>
-            <small>Jl Karya Timur Gang 1 RT 7 RW 2, Purwantoro, Blimbig, Kota Malang, 65122
-            </small>
+        <div class="header">
+            <h2 style="margin: 0;">Toko Pimny</h2>
+            <h4 style="margin: 0; font-weight: 400">Jl Karya Timur Gang 1 RT 7 RW 2, Purwantoro, Blimbig, Kota Malang, 65122</h4>
         </div>
         <hr>
-        <div class="flex-container-1">
-            <div class="left">
-                <ul>
-                    <li>No Order</li>
-                    <li>Kasir</li>
-                    <li>Tanggal</li>
-                </ul>
-            </div>
-            <div class="right">
-                <ul>
-                    <li> {{ $sale->invoice_number }} </li>
-                    <li> Sabina </li>
-                    <li> {{ date('Y-m-d : H:i:s', strtotime($sale->updated_at)) }} </li>
-                </ul>
-            </div>
+        <div class="content">
+            <table class="table-1">
+                <tr>
+                    <th>No Order</th>
+                    <td>{{ $sale->invoice_number }}</td>
+                </tr>
+                <tr>
+                    <th>Kasir</th>
+                    <td>Sabina</td>
+                </tr>
+                <tr>
+                    <th>Tanggal</th>
+                    <td>{{ date('Y-m-d : H:i:s', strtotime($sale->updated_at)) }}</td>
+                </tr>
+            </table>
         </div>
         <hr>
-        <div class="flex-container" style="margin-bottom: 10px; text-align:right;">
-            <div style="text-align: left; font-size:15px">Produk</div>
-            <div style="font-size:15px">Harga/Qty</div>
-            <div style="font-size:15px">Total</div>
-        </div>
-        @foreach ($sale->saleDetailsWithProduct  as $saleDetail)
-                <div class="flex-container" style="text-align: right;">
-                    <div style="text-align: left; font-size:13px"">{{ $saleDetail->quantity }} x {{ $saleDetail->product->name }}</div>
-                    <div style="font-size:13px">Rp {{ number_format($saleDetail->product->sale_price) }} </div>
-                    <div style="font-size:13px">Rp {{ number_format($saleDetail->total_price) }} </div>
-                </div>
-        @endforeach
-        <hr>
-        <div class="flex-container-2" style="text-align: right; margin-top: 10px;">
-            <div></div>
-            <div class="left">
-                <ul>
-                    <li>Grand Total</li>
-                    <li>Pembayaran</li>
-                    <li>Kembalian</li>
-                </ul>
-            </div>
-            <div class="right">
-                <ul>
-                    <li>Rp {{ number_format($sale->total_price) }} </li>
-                    <li>Rp {{ number_format($sale->payment_amount) }}</li>
-                    <li>Rp {{ number_format($sale->payment_amount - $sale->total_price) }}</li>
-                </ul>
-            </div>
+        <div class="content">
+            <table>
+                <tr>
+                    <th style="width: 40%; ">Produk</th>
+                    <th style="width: 30%; ">Harga</th>
+                    <th style="width: 30%; ">Total</th>
+                </tr>
+                @foreach ($sale->saleDetailsWithProduct as $saleDetail)
+                <tr>
+                    <td style="">{{ $saleDetail->quantity }} x {{ $saleDetail->product->name }}</td>
+                    <td style="">Rp {{ number_format($saleDetail->product->sale_price,'0', '.','.') }}</td>
+                    <td style="">Rp {{ number_format($saleDetail->total_price,'0', '.','.') }}</td>
+                </tr>
+                @endforeach
+            </table>
         </div>
         <hr>
-        <div class="header" style="margin-top: 50px;">
+        <div class="content">
+            <table class="table-2">
+                <tr>
+                    <th>Grand Total</th>
+                    <td>Rp {{ number_format($sale->total_price,'0', '.','.') }}</td>
+                </tr>
+                <tr>
+                    <th>Pembayaran</th>
+                    <td>Rp {{ number_format($sale->payment_amount,'0', '.','.') }}</td>
+                </tr>
+                <tr>
+                    <th>Kembalian</th>
+                    <td>Rp {{ number_format($sale->payment_amount - $sale->total_price,'0', '.','.') }}</td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+        <div class="header" style="margin-top: 10px; text-align: center;">
             <h3>Terimakasih</h3>
             <p>Silahkan berkunjung kembali</p>
         </div>

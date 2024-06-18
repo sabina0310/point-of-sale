@@ -146,7 +146,8 @@ class DataController extends Controller
 
 
             return response()->json([
-                'success' => true
+                'success' => true,
+                'data' => $eloquent
             ]);
         } catch (\Exception $e) {
             DB::connection('mysql')->rollback();

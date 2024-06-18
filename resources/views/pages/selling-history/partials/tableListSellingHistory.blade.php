@@ -56,14 +56,6 @@
                                 <a href="{{ route('sale-history.edit', ['id' => $data->id]) }}" class="btn btn-link text-secondary mb-0">
                                     <i class="fa fa-edit text-xs" style="color: rgb(255, 179, 0)" aria-hidden="true" title="Edit transaksi"></i>
                                 </a>
-                                <form action="/sale-history" method="post" id="delete-form-{{ $data->id }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input hidden type="text" name="id" value="{{ $data->id }}">
-                                    <button type="button" class="btn btn-link text-secondary mb-0" onclick="deleteData({{ $data->id }})">
-                                        <i class="fa fa-trash text-xs" style="color: red" aria-hidden="true" title="Hapus transaksi"></i>
-                                    </button>
-                                </form>
                             @endif
                             @if ($data->status == 'success')
                             <form action="{{ route('generate-receipt') }}" method="GET" target="_blank" style="display: inline;">
@@ -73,6 +65,14 @@
                                 </button>
                             </form>
                             @endif
+                            <form action="/sale-history" method="post" id="delete-form-{{ $data->id }}">
+                                @csrf
+                                @method('DELETE')
+                                <input hidden type="text" name="id" value="{{ $data->id }}">
+                                <button type="button" class="btn btn-link text-secondary mb-0" onclick="deleteData({{ $data->id }})">
+                                    <i class="fa fa-trash text-xs" style="color: red" aria-hidden="true" title="Hapus transaksi"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

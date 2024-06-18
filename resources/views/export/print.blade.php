@@ -3,8 +3,11 @@
 <head>
     <title>Print Receipt</title>
     <script>
+         // Adjust timing if needed
         window.onload = function() {
-            window.print(); // Automatically open the print dialog
+            setTimeout(function() {
+                window.print(); // Automatically open the print dialog
+            }, 1000);
         };
 </script>
     </script>

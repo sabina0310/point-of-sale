@@ -45,7 +45,7 @@
                                         </div>
                                         <div class="form-group d-flex align-items-center">
                                             <label for="purchase_price" class="me-2 text-sm col-3">Harga Beli</label>
-                                            <input required type="text" class="form-control" id="purchase-price" name="purchase_price" value="{{ isset($product) ? number_format($product->purchase_price, 0, '.', '.') : '' }}" placeholder="Masukkan harga beli" oninput="onPurchasePrice(this)">
+                                            <input required type="text" class="form-control" id="purchase-price" name="purchase_price" value="{{ isset($product) ? $product->purchase_price: '' }}" placeholder="Masukkan harga beli" oninput="onPurchasePrice(this)">
                                         </div>
                                     </div>
 
@@ -69,7 +69,7 @@
                                         </div>
                                         <div class="form-group d-flex align-items-center">
                                             <label for="profit" class="me-2 text-sm col-3">Laba</label>
-                                            <input disabled type="text" class="form-control" id="profit" value="{{ isset($product) ? number_format($product->sale_price - $product->price_per_purchase_item, 0, '.', '.') : '' }}" placeholder="0" oninput="formattedPrice(this)">
+                                            <input disabled type="text" class="form-control" id="profit" value="{{ isset($product) ? $product->sale_price - $product->price_per_purchase_item : '' }}" placeholder="0" oninput="formattedPrice(this)">
                                         </div>
                                     </div>
                                 </div>

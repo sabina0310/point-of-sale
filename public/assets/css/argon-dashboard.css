@@ -317,16 +317,16 @@ th {
   text-align: -webkit-match-parent;
 }
 
-thead,
+/* thead,
 tbody,
 tfoot,
 tr,
-td,
 th {
   border-color: inherit;
   border-style: solid;
-  border-width: 0;
-}
+  border-width: 1; 
+  border-collapse: collapse;
+  /* border width */
 
 label {
   display: inline-block;
@@ -2398,6 +2398,7 @@ progress {
 }
 .table > tbody {
   vertical-align: inherit;
+
 }
 .table > thead {
   vertical-align: bottom;
@@ -2542,6 +2543,7 @@ progress {
 .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  margin: 10px;
 }
 
 @media (max-width: 575.98px) {

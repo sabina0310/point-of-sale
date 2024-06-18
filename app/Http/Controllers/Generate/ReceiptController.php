@@ -15,14 +15,14 @@ class ReceiptController extends Controller
     {
         $data['sale'] = Sale::with('SaleDetailsWithProduct')->where('invoice_number', $request->invoice_number)->first();
         // dd($data);
-        // $pdf = PDF::loadView('export.generateReceipt', $data);
-        //         $pdf->setPaper([0, 0, 189, 9999]);
+        $pdf = PDF::loadView('export.generateReceipt', $data);
+        $pdf->setPaper(['0', '0', '377.9527559', '2500']);
 
 
-        // return $pdf->stream();
-        $receiptContent = view('export.generateReceipt', $data)->render();
+        return $pdf->stream();
 
-        return $this->printReceipt($receiptContent);
+        // $receiptContent = view('export.generateReceipt', $data)->render();
+        // return $this->printReceipt($receiptContent);
     }
 
     protected function printReceipt($content)

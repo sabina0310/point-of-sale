@@ -14,15 +14,19 @@
                         <h5>Laporan Penjualan</h5>
                         <div class="input-group input-daterange d-flex justify-content-center ">
                             <div class="w-20">
-                                <input type="month" class="form-control" value="" id="start-date-transaction" onchange="filterDateTransaction(this.value)">
+                                <input type="date" class="form-control" value="" id="start-date-report" onchange="filterDateReport()" placeholder="Tanggal Mulai">
                             </div>
                             <span class="mx-2"> - </span>
                             <div class="w-20">
-                                <input type="month" class="form-control" value="" id="end-date-transaction" onchange="filterDateTransaction(this.value)">
+                                <input type="date" class="form-control" value="" id="end-date-report" onchange="filterDateReport()">
                             </div>
                         </div>
                         <div class="d-flex justify-content-center mt-3">
-                            <a href="{{ route('purchase.create') }}" class="btn btn-primary btn-sm mb-0 w-12" onclick="openModalFormInsert()"><i class="fas fa-file-pdf me-2"></i>PDF</a>
+                            <button type="button" class="btn btn-primary btn-sm mb-0 w-12 me-2" onclick="showAll()">Show All</button>
+                            <form action="{{ route('report-sale.export-excel') }}" method="GET" target="_blank" style="display: inline;">
+                            </form>
+                            <button type="button" class="btn btn-primary btn-sm mb-0 w-12 me-2" onclick="exportExcel()"><i class="fas fa-file-excel me-2"></i>Excel</button>
+                            
                         </div>
                     </div>
 
@@ -37,18 +41,19 @@
 
 @section('script')
     <script>
-        function filterData(search = null, page = null) {
-            console.log('tes');
+        function filterData(startDate = null, endDate = null) {
+            console.log(startDate);
+            console.log(endDate);
+
         $.ajax({
             url: "{{ route('report-sale.filter') }}",
             type: 'GET',
             data: {
-                search: search,
-                page: page
+                startDate: startDate,
+                endDate: endDate
             },
             success: function(data) {
                 $('#table-list-sale-report').html(data);
-                console.log(data);
             },
             error: function(error) {
                 console.log(error);
@@ -59,6 +64,38 @@
     $(document).ready(function() {
         filterData();
     });
+
+    function filterDateReport(){
+        var startDateReport = $('#start-date-report').val();
+        var endDateReport = $('#end-date-report').val();
+        console.log(startDateReport);
+        console.log(endDateReport);
+
+        filterData(startDateReport, endDateReport)
+    }
+
+    function showAll(){
+        var startDateReport = $('#start-date-report').val('');
+        var endDateReport = $('#end-date-report').val('');
+        filterData();
+    }
+
+    function exportExcel(){
+        let startDate = document.getElementById('start-date-report').value;
+        let endDate = document.getElementById('end-date-report').value;
+        
+        let baseUrl = "{{ asset('/') }}";
+
+        let generateReceiptRoute = 'report-sale/export-excel';
+
+        let csrfToken = "{{ csrf_token() }}";
+
+        // Construct the complete URL with parameters
+        let url = `${baseUrl}${generateReceiptRoute}?_token=${csrfToken}&startDate=${startDate}&endDate=${endDate}`;
+        
+        window.open(url, '_blank');
+    
+    }
 
     </script>
 @endsection

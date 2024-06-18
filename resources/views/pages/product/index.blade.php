@@ -8,57 +8,62 @@
     @include('layouts.navbars.auth.topnav', ['title' => 'Produk'])
     <div class="container-fluid py-4">
         <div class="row">
-            <div class="col-md-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="col-md-5 col-sm-6 mb-xl-0 mb-4">
                 <div class="card">
-                    <div class="card-body p-3">
+                    <div class="card-body p-3 pb-0">
                         <div class="row">
                             <div class="col-8" >
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Produk</p>
-                                    <h5 class="font-weight-bolder">
-                                        5
-                                    </h5>
-                                    {{-- <p class="mb-0">
-                                        <span class="text-danger text-sm font-weight-bolder">-2%</span>
-                                        since last quarter
-                                    </p> --}}
+                                    <h4 class="font-weight-bolder m-0">
+                                        {{ $totalProduct }}
+                                    </h4>
                                 </div>
                             </div>
                             <div class="col-4 text-end">
                                 <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-                                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                                    <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
                                 </div>
-                            </div>
-                            <div>
-                                <p hidden> dfd</p>
                             </div>
                         </div>
                     </div>
+                    <div class="card-footer p-1 text-white text-sm">
+                        @
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="col-md-7 col-sm-6 mb-xl-0 mb-4">
                 <div class="card">
-                    <div class="card-body p-3">
+                    <div class="card-body p-3 pb-0">
                         <div class="row">
                             <div class="col-8" onclick="openModalStock()" style="cursor: pointer">
                                 <div class="numbers">
                                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Produk Stok < 3</p>
-                                    <h5 class="font-weight-bolder">
-                                        0
-                                    </h5>
+                                    <h4 class="font-weight-bolder mb-0">
+                                        {{ $outOfStockProduct }}
+                                    </h4>
                                 </div>
                             </div>
                             <div class="col-4 text-end">
                                 <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-                                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                                    <i class="fas fa-exclamation text-lg opacity-10" aria-hidden="true"></i>
                                 </div>
                             </div>
-                            <div>
-                                <p class="mb-0">
-                                        <span class="text-danger text-sm font-weight-bolder">Stok menipis segera lakukan pembelian!</span>
-                                    </p>
-                            </div>
                         </div>
+                    </div>
+                    <div class="card-footer px-3 py-1 ">
+                    @if ($outOfStockProduct > 0)
+                        <span class="text-danger font-weight-bolder text-sm ">
+                            Stok akan habis, segera lakukan pembelian!
+                        </span>
+                        <span class="text-link font-weight-bold text-sm opacity-6">
+                            Klik untuk melihat produk.
+                        </span>
+                    @else 
+                        <span class="text-success font-weight-bolder text-sm ">
+                            Stok produk aman!
+                        </span>
+                    @endif
                     </div>
                 </div>
             </div>
@@ -111,12 +116,57 @@
         });
     }
 
+    function getCheckStock(){
+            $.ajax({
+            url: "{{ route('product.check-stock') }}", // Adjust the route as per your Laravel routes
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    console.log(response.data);
+                    var data = response.data;
+
+                    // Clear existing table rows
+                    $('#product-table-body').empty();
+
+                    // Check if data is not empty
+                    if (data.length > 0) {
+                        // Loop through the data and create table rows
+                        $.each(data, function(index, product) {
+                            var row = '<tr>' +
+                                '<td class="align-middle text-left text-md font-weight-bold">' + (index + 1) + '</td>' +
+                                '<td class="align-middle text-left text-md font-weight-bold">' + product.name + '</td>' +
+                                '<td class="align-middle text-left text-md font-weight-bold">' + product.stock + '</td>' +
+                                '</tr>';
+                            $('#product-table-body').append(row);
+                        });
+                    } else {
+                        // If data is empty, display a message in a table row
+                        var emptyRow = '<tr><td colspan="3" class="text-center">Tidak ada produk</td></tr>';
+                        $('#product-table-body').append(emptyRow);
+                    }
+
+                    $('#modal-stock').modal('show');
+                }else {
+                        console.error('Gagal mendapatkan data dari server');
+                }
+            },
+            error: function(error) {
+                console.error('Error fetching product data:', error);
+                // Handle error scenario as needed
+            }
+        });
+    }
+
     $(document).ready(function() {
         filterData();
     });
 
     function filterSearch(search) {
         filterData(search);
+    }
+
+    function openModalStock(){
+        getCheckStock();
     }
 
     $(document).on('click', '#table-data .pagination a', function(e) {
@@ -141,12 +191,6 @@
             });
     }
 
-    function openModalStock(){
-        console.log('ya');
-        $('#modal-stock #id').val('');
-        $('#modal-stock #name').val('');
-        $('#modal-stock').modal('show');
-    }
 </script>
 
 @endsection

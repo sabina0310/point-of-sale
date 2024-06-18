@@ -107,7 +107,17 @@
         $(document).ready(function() {
             filterData();
             receiptProduct();
-            // generateInvoice();
+
+            let receiptUrl= localStorage.getItem('receiptUrl');
+            // let receiptUrl = "http://127.0.0.1:8000/generate-receipt?_token=SIgWHSUX895jMACTuqW45nm590F2tNDE1IMn2HBx&invoice_number=PMN2406180051";
+            
+            if (receiptUrl) {
+                setTimeout(() => {
+                    window.open(receiptUrl, '_blank');
+
+                    localStorage.removeItem('receiptUrl');
+                }, 3500);
+            }
         });
 
         function calculateReturn(value) {
@@ -140,8 +150,8 @@
                 },
                 error: function(error) {
                     Swal.fire({
-                            title: error.responseJSON.errors,
-                            icon: "error"
+                        title: error.responseJSON.errors,
+                        icon: "error"
                     });
                     console.error('Terjadi kesalahan: ', error);
                 }
@@ -149,7 +159,6 @@
         }
 
         function deleteCartProduct(id) {
-            console.log(id);
             $.ajax({
                 url: "{{ route('sale.delete-cart-product') }}",
                 method: 'DELETE',
@@ -174,10 +183,18 @@
 
         function submit(){
             var invoiceNumber = $('#invoice-number').text().trim();
-            var totalAmount = $('#total-amount').text().trim();
+            var totalAmountText = $('#total-amount').text().trim();
+
+            // Remove any non-numeric characters (optional, if your text includes commas or currency symbols)
+            totalAmountText = totalAmountText.replace(/[^0-9.-]+/g,"");
+
+            // Convert the cleaned string to an integer
+            var totalAmount = parseInt(totalAmountText, 10);
             var paymentAmount = $('#payment-amount').val();
             console.log(totalAmount);
             console.log(paymentAmount);
+
+            console.log(paymentAmount < totalAmount ? true : false);
 
 
             if (paymentAmount == 0 || paymentAmount == '') {
@@ -222,6 +239,35 @@
                     },
                     success: function(response) {
                         if (response.success) {
+                            Swal.fire({
+                            title: "Transaksi Berhasil!",
+                            text: "Transaksi telah berhasil diproses",
+                            icon: "success",
+                            timer: 3500
+                            }).then(() => {
+                                                                
+                                var data = response.data;
+                                // Define the base URL of your Laravel application
+                                let baseUrl = "{{ asset('/') }}";
+
+                                // Define the route to generate receipt (adjust if needed)
+                                let generateReceiptRoute = 'generate-receipt';
+
+                                // Define your CSRF token (replace with actual token from your application)
+                                let csrfToken = "{{ csrf_token() }}";
+
+                                // Define the invoice number (replace with actual invoice number)
+                                let invoiceNumber = data.invoice_number;
+
+                                // Construct the complete URL with parameters
+                                let url = `${baseUrl}${generateReceiptRoute}?_token=${csrfToken}&invoice_number=${invoiceNumber}`;
+
+                                // Save the URL to local storage
+                                localStorage.setItem('receiptUrl', url);
+
+                                // Reload the page
+                                window.location.href = '/sale';
+                            }); 
                         } else {
                             console.error('Gagal mendapatkan data dari server');
                         }
@@ -241,7 +287,6 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            
                             Swal.fire({
                             title: "Transaksi Berhasil!",
                             text: "Transaksi telah berhasil diproses",

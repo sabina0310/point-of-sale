@@ -6,7 +6,7 @@
                     No </th>
                 <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 20%">
                     No Struk </th>
-                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 30%">
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">
                     Tanggal </th>
                 <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: ">
                     Produk </th>
@@ -18,7 +18,6 @@
                     Total </th>
                 <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: ">
                     Total Belanja </th>
-                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -49,10 +48,6 @@
                         </td>
                         <td rowspan="{{ count($data->saleDetailsWithProduct) }}" class="align-middle text-left text-md font-weight-bold">
                             Rp {{ number_format($data->total_price, 0 , '.', '.') }}
-
-                        </td>
-                        <td rowspan="{{ count($data->saleDetailsWithProduct) }}" class="align-middle text-left text-md font-weight-bold">
-                            
                         </td>
                     </tr>  
                     @for($i=1; $i<count($data->saleDetailsWithProduct); $i++)
@@ -73,6 +68,9 @@
                     @endfor
                 @endforeach
             @else
+                <tr>
+                    <td colspan="8" class="text-center">Tidak ada data</td>
+                </tr>
             @endif
             
         </tbody>

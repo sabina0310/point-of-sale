@@ -60,6 +60,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::prefix('report-sale')->group(function () {
 		Route::get('/', [ReportSaleViewController::class, 'index'])->name('report-sale');
 		Route::get('/filter', [ReportSaleViewController::class, 'filter'])->name('report-sale.filter');
+		Route::get('/export-excel', [ReportSaleViewController::class, 'exportExcel'])->name('report-sale.export-excel');
+
 	});
 
 	Route::prefix('dashboard')->group(function () {
@@ -113,6 +115,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::prefix('product')->group(function () {
 			Route::get('/', [ProductViewController::class, 'index'])->name('product');
 			Route::get('/filter', [ProductViewController::class, 'filter'])->name('product.filter');
+			Route::get('/check-stock', [ProductViewController::class, 'checkStock'])->name('product.check-stock');
+
 			Route::get('/{id}/show', [ProductDataController::class, 'show'])->name('product.show');
 			Route::delete('/', [ProductDataController::class, 'delete'])->name('product.delete');
 
