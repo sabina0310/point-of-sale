@@ -15,7 +15,7 @@
                 <div class="card mb-4">
                     <div id="alert">
                     @include('components.alert')
-                </div>
+                    </div>
                     <div class="card-header pb-3 d-flex align-items-center">
                         <h5 id="title">{{ $currentTitle }}</h5>
                     </div>
@@ -28,7 +28,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group d-flex align-items-center">
                                             <label for="category" class="me-2 text-sm col-3">Produk</label>
-                                            <select required class="form-select w-40" name="product_id" aria-label="Default select example" id="product-select" onchange="getProductData(this.value)" {{ $isCreateRoute ? '' : 'disabled' }}>
+                                            <select required class="form-select" name="product_id" aria-label="Default select example" id="product-select" onchange="getProductData(this.value)" {{ $isCreateRoute ? '' : 'disabled' }}>
                                                 <option selected disabled>Pilih Produk</option>
                                                 @foreach($product as $data_product)
                                                 <option value="{{ $data_product->id }}" {{ isset($purchase) && $purchase->product_id == $data_product->id ? 'selected' : '' }}>
@@ -77,7 +77,7 @@
                             
                         </div>
                         <div class="card-footer text-end">
-                            <a href="javascript:history.back()" type="button" class="btn btn-secondary">Back</a>
+                            <a href="{{ route('purchase') }}" type="button" class="btn btn-secondary">Back</a>
                             <button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
                         </div>
                     </form>
@@ -93,8 +93,57 @@
     function submitForm(){
         $('#total-price').prop('disabled', false);
         $('#purchase-stock').prop('disabled', false);
-        
-        $('#purchase-form').submit();
+
+        var currentRoute =  '{{ request()->url() }}';
+
+        $.ajax({
+            url: currentRoute,
+            method: 'POST',
+            data: $('#purchase-form').serialize(),
+            success: function(response) {
+                if (response.success) {
+                    console.log(response);
+                    
+                    // Redirect to /product after successful submission
+                    Swal.fire({
+                        title: "Sukses!",
+                        text: response.message,
+                        icon: "success",
+                        timer: 3500
+                    }).then(() => {
+                            window.location.href = '/purchase' // Reload the page
+                    });
+                        
+                    // Set a timeout to delay the redirection
+                    setTimeout(function() {
+                        window.location.href = '/purchase';
+                    }, 3500); 
+                    // Show success message using Swal
+                }  else {
+                    console.error('Gagal mendapatkan data dari server');
+                }
+            },
+            error: function(error) {
+                $('#total-price').prop('disabled', true);
+                $('#purchase-stock').prop('disabled', true);
+                let errorMessages = error.responseJSON.errors;
+                let errorMessageHTML = '<ul style="list-style-type: none;">';
+                
+                // Loop through each error message and create list items
+                $.each(errorMessages, function(key, value) {
+                    errorMessageHTML += '<li>' + value + '</li>';
+                });
+
+                errorMessageHTML += '</ul>';
+
+                Swal.fire({
+                    title: 'Error!',
+                    html: errorMessageHTML,
+                    icon: 'error',
+                    timer: 3500,
+                });
+            }
+        });
     }
 
     function calculateTotalPrice(quantity) {

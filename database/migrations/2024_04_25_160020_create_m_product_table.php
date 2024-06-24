@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('m_category');
             $table->string('purchase_unit');
             $table->integer('purchase_price');
-            $table->string('quantity_per_purchase_unit');
+            $table->integer('quantity_per_purchase_unit');
             $table->integer('price_per_purchase_item');
             $table->string('sale_unit');
             $table->integer('sale_price');

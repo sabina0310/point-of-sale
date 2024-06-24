@@ -177,18 +177,25 @@
 
     function deleteData(id) {
         Swal.fire({
-        title: 'Apakah Anda yakin ingin menghapus data ini?',
-        text: 'Data ini tidak bisa dipulihkan setelah dihapus!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        dangerMode: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#delete-form-' + id).submit();
-                }
-            });
+            title: "Apakah Anda yakin ingin menghapus data ini?",
+            text: "Data yang dihapus tidak dapat dipulihkan!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                title: "Berhasil!",
+                text: "Data telah terhapus!",
+                icon: "success",
+                timer: 500
+                });
+                $('#delete-form-' + id).submit();
+            }
+        });
     }
 
 </script>

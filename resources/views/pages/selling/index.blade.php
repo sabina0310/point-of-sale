@@ -116,7 +116,7 @@
                     window.open(receiptUrl, '_blank');
 
                     localStorage.removeItem('receiptUrl');
-                }, 3500);
+                }, 500);
             }
         });
 

@@ -11,9 +11,6 @@
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
-                    <div id="alert">
-                    @include('components.alert')
-                </div>
                     <div class="card-header pb-3 d-flex align-items-center">
                         <h5 id="title">{{ $currentTitle }}</h5>
                     </div>
@@ -122,6 +119,8 @@
                     }
                 },
                 error: function(error) {
+                    $('#price-per-purchase-item').prop('disabled', true);
+
                     let errorMessages = error.responseJSON.errors;
                     let errorMessageHTML = '<ul style="list-style-type: none;">';
                     
@@ -133,7 +132,7 @@
                     errorMessageHTML += '</ul>';
 
                     Swal.fire({
-                        title: 'Gagal!',
+                        title: 'Error!',
                         html: errorMessageHTML,
                         icon: 'error',
                         timer: 3500,

@@ -12,6 +12,8 @@ use App\Http\Controllers\Sale\DataController as SaleDataController;
 use App\Http\Controllers\SaleHistory\ViewController as SaleHistoryViewController;
 use App\Http\Controllers\SaleHistory\DataController as SaleHistoryDataController;
 use App\Http\Controllers\ReportSale\ViewController as ReportSaleViewController;
+use App\Http\Controllers\User\ViewController as UserViewController;
+use App\Http\Controllers\User\DataController as UserDataController;
 
 
 
@@ -43,26 +45,12 @@ use App\Http\Controllers\Generate\ReceiptController;
 Route::get('/', function () {
 	return redirect('/dashboard');
 })->middleware('auth');
-Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
-Route::post('/register', [RegisterController::class, 'store'])->middleware('guest')->name('register.perform');
 Route::get('/login', [LoginController::class, 'show'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'login'])->middleware('guest')->name('login.perform');
-Route::get('/reset-password', [ResetPassword::class, 'show'])->middleware('guest')->name('reset-password');
-Route::post('/reset-password', [ResetPassword::class, 'send'])->middleware('guest')->name('reset.perform');
-Route::get('/change-password', [ChangePassword::class, 'show'])->middleware('guest')->name('change-password');
-Route::post('/change-password', [ChangePassword::class, 'update'])->middleware('guest')->name('change.perform');
-
 
 Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/generate-receipt', [ReceiptController::class, 'generateReceipt'])->name('generate-receipt');
-
-	Route::prefix('report-sale')->group(function () {
-		Route::get('/', [ReportSaleViewController::class, 'index'])->name('report-sale');
-		Route::get('/filter', [ReportSaleViewController::class, 'filter'])->name('report-sale.filter');
-		Route::get('/export-excel', [ReportSaleViewController::class, 'exportExcel'])->name('report-sale.export-excel');
-
-	});
 
 	Route::prefix('dashboard')->group(function () {
 		Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -86,31 +74,50 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/filter', [SaleViewController::class, 'filter'])->name('sale.filter');
 		Route::get('/receipt', [SaleViewController::class, 'receiptProduct'])->name('sale.receipt');
 
-		// Route::get('/generate', [SaleDataController::class, 'generateInvoiceNumber'])->name('sale.generate');
-
 		Route::post('/', [SaleDataController::class, 'submit'])->name('sale.submit');
 		Route::post('/create', [SaleDataController::class, 'submitProduct'])->name('sale.submit-product');
 		Route::delete('/cancel', [SaleDataController::class, 'cancel'])->name('sale.cancel');
 		Route::delete('/delete-cart-product', [SaleDataController::class, 'deleteCartProduct'])->name('sale.delete-cart-product');
 	});
 
-	Route::prefix('purchase')->group(function () {
-		Route::get('/', [PurchaseViewController::class, 'index'])->name('purchase');
-		Route::get('/filter', [PurchaseViewController::class, 'filter'])->name('purchase.filter');
-		Route::delete('/', [PurchaseDataController::class, 'delete'])->name('purchase.delete');
 
-
-		Route::get('/create', [PurchaseViewController::class, 'form'])->name('purchase.create');
-		Route::get('/{id}/edit', [PurchaseViewController::class, 'form'])->name('purchase.edit');
-
-		Route::post('/create', [PurchaseDataController::class, 'submit']);
-		Route::post('/{id}/edit', [PurchaseDataController::class, 'submit']);
-
-
-		Route::get('/{id}/product', [PurchaseDataController::class, 'showProduct'])->name('purchase.product');
-	});
 
 	Route::middleware('role:admin')->group(function () {
+		Route::prefix('report-sale')->group(function () {
+			Route::get('/', [ReportSaleViewController::class, 'index'])->name('report-sale');
+			Route::get('/filter', [ReportSaleViewController::class, 'filter'])->name('report-sale.filter');
+			Route::get('/export-excel', [ReportSaleViewController::class, 'exportExcel'])->name('report-sale.export-excel');
+		});
+
+		Route::prefix('purchase')->group(function () {
+			Route::get('/', [PurchaseViewController::class, 'index'])->name('purchase');
+			Route::get('/filter', [PurchaseViewController::class, 'filter'])->name('purchase.filter');
+			Route::delete('/', [PurchaseDataController::class, 'delete'])->name('purchase.delete');
+
+
+			Route::get('/create', [PurchaseViewController::class, 'form'])->name('purchase.create');
+			Route::get('/{id}/edit', [PurchaseViewController::class, 'form'])->name('purchase.edit');
+
+			Route::post('/create', [PurchaseDataController::class, 'submit']);
+			Route::post('/{id}/edit', [PurchaseDataController::class, 'submit']);
+
+
+			Route::get('/{id}/product', [PurchaseDataController::class, 'showProduct'])->name('purchase.product');
+		});
+
+		Route::prefix('user')->group(function () {
+			Route::get('/', [UserViewController::class, 'index'])->name('user');
+			Route::get('/filter', [UserViewController::class, 'filter'])->name('user.filter');
+			Route::get('/create', [UserViewController::class, 'form'])->name('user.create');
+			Route::get('/{id}/edit', [UserViewController::class, 'form'])->name('user.edit');
+			Route::post('/', [UserDataController::class, 'submit'])->name('user.submit');
+
+			Route::post('/create', [UserDataController::class, 'submit']);
+			Route::post('/{id}/edit', [UserDataController::class, 'submit']);
+
+			Route::get('/{id}/show', [UserDataController::class, 'show'])->name('user.show');
+			Route::delete('/', [UserDataController::class, 'delete'])->name('user.delete');
+		});
 
 		Route::prefix('product')->group(function () {
 			Route::get('/', [ProductViewController::class, 'index'])->name('product');
@@ -136,19 +143,7 @@ Route::group(['middleware' => 'auth'], function () {
 		});
 	});
 
-
-	Route::get('/virtual-reality', [PageController::class, 'vr'])->name('virtual-reality');
-	Route::get('/rtl', [PageController::class, 'rtl'])->name('rtl');
 	Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
 	Route::post('/profile', [UserProfileController::class, 'update'])->name('profile.update');
-	Route::get('/profile-static', [PageController::class, 'profile'])->name('profile-static');
-	Route::get('/sign-in-static', [PageController::class, 'signin'])->name('sign-in-static');
-	Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static');
-	Route::get('/{page}', [PageController::class, 'index'])->name('page');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-
-	// Route::group(['prefix' => 'category'], function () {
-	// 	Route::get('/', [CategoryViewController::class, 'index'])->name('category');
-	// });
 });

@@ -27,7 +27,7 @@
                             <button class="btn btn-link text-secondary mb-0" onclick="openModalFormEdit({{ $data->id }})">
                                 <i class="fa fa-edit text-xs" style="color: rgb(255, 179, 0)" aria-hidden="true" title="Edit kategori"></i>
                             </button>
-                            <form action="/category" id="delete-form-{{ $data->id }}"">
+                            <form action="/category" method="post" id="delete-form-{{ $data->id }}"">
                                 @csrf
                                 @method('DELETE')
                                 <input hidden type="text" name="id" value="{{ $data->id }}">
@@ -40,7 +40,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="2" class="text-center">Tidak ada kategori</td>
+                    <td colspan="2" class="text-center">Tidak ada data</td>
                 </tr>
             @endif
         </tbody>

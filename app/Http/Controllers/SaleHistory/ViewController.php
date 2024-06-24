@@ -15,7 +15,11 @@ class ViewController extends Controller
 
     public function filter(Request $request)
     {
-        $data['listSaleHistory'] = Sale::orderByDesc('id')->paginate(5);
+        $filter = $request->all();
+        $data['listSaleHistory'] = Sale::orderByDesc('id')
+            ->when(!empty($filter['search']), function ($query) use ($filter) {
+                return $query->where('t_sale.invoice_number', 'like', '%' . $filter['search'] . '%');
+            })->paginate(5);
         if ($request->ajax()) {
             return view('pages.selling-history.partials.tableListSellingHistory', $data);
         }

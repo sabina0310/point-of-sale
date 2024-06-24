@@ -23,7 +23,6 @@ class DataController extends Controller
             'price_per_purchase_item.required' => 'Harga per item wajib diisi.',
             'sale_unit.required' => 'Satuan jual wajib diisi.',
             'sale_price.required' => 'Harga jual wajib diisi.',
-            // Add more custom messages as needed
         ];
 
         $validator = Validator::make($request->all(), [
@@ -64,7 +63,6 @@ class DataController extends Controller
                 $eloquent->save();
                 DB::connection('mysql')->commit();
                 return response()->json(['success' => true, 'message' => 'Berhasil menambah data produk']);
-                // return back()->with('success', 'Berhasil menambahkan data produk');
             } else {
                 $eloquent->name = request()->input('name');
                 $eloquent->category_id = request()->input('category_id');
@@ -77,7 +75,6 @@ class DataController extends Controller
                 $eloquent->save();
                 DB::connection('mysql')->commit();
                 return response()->json(['success' => true, 'message' => 'Berhasil mengubah data produk']);
-                // return back()->with('success', 'Berhasil mengubah data produk');
             }
         } catch (\Exception $e) {
             DB::connection('mysql')->rollback();

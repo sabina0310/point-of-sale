@@ -34,10 +34,10 @@
                         <td rowspan="{{ count($data->saleDetailsWithProduct) }}" style="border: 1px solid black; text-align: center; vertical-align: middle;">
                             {{ $loop->index + 1  }}
                         </td>
-                        <td rowspan="{{ count($data->saleDetailsWithProduct) }}" style="border: 1px solid black; text-align: center;" >
+                        <td rowspan="{{ count($data->saleDetailsWithProduct) }}" style="border: 1px solid black; text-align: center; vertical-align: middle;" >
                             {{ $data->invoice_number }}
                         </td>
-                        <td rowspan="{{ count($data->saleDetailsWithProduct) }}" style="border: 1px solid black; text-align: center;">
+                        <td rowspan="{{ count($data->saleDetailsWithProduct) }}" style="border: 1px solid black; text-align: center; vertical-align: middle;">
                             {{ \Carbon\Carbon::parse($data->updated_at)->format('d-m-Y') }}
                         </td>
                         <td style="border: 1px solid black;">
@@ -52,7 +52,7 @@
                         <td style="border: 1px solid black;">
                             Rp {{ number_format($data->saleDetailsWithProduct[0]->total_price, 0 , '.', '.') }}
                         </td>
-                        <td rowspan="{{ count($data->saleDetailsWithProduct) }}" style="border: 1px solid black; text-align: center;">
+                        <td rowspan="{{ count($data->saleDetailsWithProduct) }}" style="border: 1px solid black; text-align: center; vertical-align: middle;">
                             Rp {{ number_format($data->total_price, 0 , '.', '.') }}
                         </td>
                     </tr>

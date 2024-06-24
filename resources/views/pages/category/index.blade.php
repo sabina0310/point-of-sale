@@ -10,9 +10,6 @@
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
-                    <div id="alert">
-                        @include('components.alert')
-                    </div>
                     <div class="card-header pb-3 d-flex align-items-center">
                         <h5>Kategori</h5>
                         <div class="ms-md-auto pe-md-3 d-flex">
@@ -99,25 +96,76 @@
             });
         }
 
-        function deleteData(id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Once deleted, you will not be able to recover this data!',
-                icon: 'warning',
-                buttons: {
-                    cancel: 'Cancel',
-                    confirm: 'Delete'
+        function submitForm(){
+            $.ajax({
+                url: "{{ route('category') }}",
+                method: 'POST',
+                data: $('#category-form').serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        console.log(response);
+                        
+                        // Redirect to /product after successful submission
+                        Swal.fire({
+                            title: "Sukses!",
+                            text: response.message,
+                            icon: "success",
+                            timer: 3500
+                        }).then(() => {
+                                window.location.href = '/category' // Reload the page
+                        });
+                            
+                        // Set a timeout to delay the redirection
+                        setTimeout(function() {
+                            window.location.href = '/category';
+                        }, 3500); 
+                        // Show success message using Swal
+                    }  else {
+                        console.error('Gagal mendapatkan data dari server');
+                    }
                 },
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $('#delete-form-' + id).submit();
+                error: function(error) {
+                    let errorMessages = error.responseJSON.errors;
+                    let errorMessageHTML = '<ul style="list-style-type: none;">';
+                    
+                    // Loop through each error message and create list items
+                    $.each(errorMessages, function(key, value) {
+                        errorMessageHTML += '<li>' + value + '</li>';
+                    });
+
+                    errorMessageHTML += '</ul>';
+
+                    Swal.fire({
+                        title: 'Error!',
+                        html: errorMessageHTML,
+                        icon: 'error',
+                        timer: 3500,
+                    });
                 }
             });
         }
 
-        
-
-        
+        function deleteData(id) {
+            Swal.fire({
+                title: "Apakah Anda yakin ingin menghapus data ini?",
+                text: "Data yang dihapus tidak dapat dipulihkan!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                    title: "Berhasil!",
+                    text: "Data telah terhapus!",
+                    icon: "success",
+                    timer: 500
+                    });
+                    $('#delete-form-' + id).submit();
+                }
+            });
+        }
     </script>
 @endsection

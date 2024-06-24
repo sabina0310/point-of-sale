@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Purchase;
 use App\Models\Product;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\Validator;
 
 class DataController extends Controller
 {
@@ -28,8 +29,29 @@ class DataController extends Controller
         }
     }
 
-    public function submit()
+    public function submit(Request $request)
     {
+
+        $messages = [
+            'product_id.required' => 'Produk produk wajib diisi.',
+            'purchase_quantity.required' => 'Jumlah pembelian wajib diisi.',
+            // 'purchase_stock.required' => 'Satuan beli wajib diisi.',
+            // 'total_price.required' => 'Harga beli wajib diisi.',
+            'date.required' => 'Tanggal wajib diisi.'
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required',
+            'purchase_quantity' => 'required',
+            // 'purchase_stock' => 'required',
+            // 'total_price' => 'required',
+            'date' => 'required'
+        ], $messages);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()],  422);
+        }
+
         $eloquent = null;
         if (!empty(request()->input('id'))) {
             $eloquent =  Purchase::find(request()->input('id'));
@@ -53,7 +75,8 @@ class DataController extends Controller
                 $product->save();
 
                 DB::connection('mysql')->commit();
-                return redirect()->route('purchase')->with('success', 'Berhasil menambahkan data pembelian');
+                return response()->json(['success' => true, 'message' => 'Berhasil menambah data pembelian']);
+
             } else {
                 $eloquent->date = request()->input('date');
 
@@ -63,14 +86,15 @@ class DataController extends Controller
 
                     $product = Product::where('id', $eloquent->product_id)->first();
                     $updatedStock = request()->input('purchase_stock') - $eloquent->purchase_stock;
-                    // dd($updatedStock);
+
                     $product->stock += $updatedStock;
                     $product->save();
                     $eloquent->purchase_stock = request()->input('purchase_stock');
                 }
                 $eloquent->save();
                 DB::connection('mysql')->commit();
-                return redirect()->route('purchase')->with('success', 'Berhasil memgubah data pembelian');
+                return response()->json(['success' => true, 'message' => 'Berhasil mengubah data pembelian']);
+
             }
         } catch (\Exception $e) {
             DB::connection('mysql')->rollback();

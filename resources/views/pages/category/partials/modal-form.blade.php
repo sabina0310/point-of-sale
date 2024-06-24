@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/category" method="post" class="">
+      <form action="/category" id="category-form" method="post" class="">
         @csrf
         <div class="modal-body">
               <input hidden type="text" class="form-control" name="id" id="id">
@@ -20,9 +20,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" onclick="submitForm()" class="btn btn-primary">Save</button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
