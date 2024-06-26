@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Product;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ActivityLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -61,6 +62,14 @@ class DataController extends Controller
                 $eloquent->sale_price = request()->input('sale_price');
                 $eloquent->stock = 0;
                 $eloquent->save();
+                $dataLog = [
+                    'log_type' => 'create',
+                    'model' => 'product',
+                    'message' => 'menambah data produk "' . $eloquent->name . '" di master produk',
+                    'data' => json_encode($eloquent)
+                ];
+                ActivityLogs::createLogs($dataLog);
+
                 DB::connection('mysql')->commit();
                 return response()->json(['success' => true, 'message' => 'Berhasil menambah data produk']);
             } else {
@@ -73,8 +82,17 @@ class DataController extends Controller
                 $eloquent->sale_unit = request()->input('sale_unit');
                 $eloquent->sale_price = request()->input('sale_price');
                 $eloquent->save();
+
+                $dataLog = [
+                    'log_type' => 'update',
+                    'model' => 'product',
+                    'message' => 'mengedit data produk "' . $eloquent->name . '" di master produk',
+                    'data' => json_encode($eloquent)
+                ];
+                ActivityLogs::createLogs($dataLog);
+
                 DB::connection('mysql')->commit();
-                return response()->json(['success' => true, 'message' => 'Berhasil mengubah data produk']);
+                return response()->json(['success' => true, 'message' => 'Berhasil mengedit data produk']);
             }
         } catch (\Exception $e) {
             DB::connection('mysql')->rollback();
@@ -108,6 +126,13 @@ class DataController extends Controller
             $data = Product::findOrFail($request->input('id'));
 
             $data->delete();
+            $dataLog = [
+                'log_type' => 'delete',
+                'model' => 'product',
+                'message' => 'menghapus data produk "' . $data->name . '" di master produk',
+                'data' => json_encode($data)
+            ];
+            ActivityLogs::createLogs($dataLog);
 
             DB::connection('mysql')->commit();
             return back()->with('success', 'Berhasil menghapus produk');

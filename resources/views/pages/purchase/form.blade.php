@@ -27,6 +27,10 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group d-flex align-items-center">
+                                            <label for="purchase_number" class="me-2 text-sm col-3">Nomor Pembelian</label>
+                                            <input required type="text" class="form-control" name="purchase_number" value="{{ $purchase->purchase_number ?? $purchase_number}}"   placeholder="pcs, box, renteng" disabled>
+                                        </div>
+                                        <div class="form-group d-flex align-items-center">
                                             <label for="category" class="me-2 text-sm col-3">Produk</label>
                                             <select required class="form-select" name="product_id" aria-label="Default select example" id="product-select" onchange="getProductData(this.value)" {{ $isCreateRoute ? '' : 'disabled' }}>
                                                 <option selected disabled>Pilih Produk</option>
@@ -137,7 +141,7 @@
                 errorMessageHTML += '</ul>';
 
                 Swal.fire({
-                    title: 'Error!',
+                    title: 'Gagal!',
                     html: errorMessageHTML,
                     icon: 'error',
                     timer: 3500,

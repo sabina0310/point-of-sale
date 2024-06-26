@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\User;
+use App\Models\ActivityLogs;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,7 @@ class DataController extends Controller
 
         try {
             DB::connection('mysql')->beginTransaction();
-            
+
             if (!isset($eloquent)) {
                 $eloquent = new User;
                 $eloquent->name = request()->input('name');
@@ -45,6 +46,15 @@ class DataController extends Controller
                 $eloquent->role = request()->input('role');
                 $eloquent->password = request()->input('password') != null ? request()->input('password') : '123';
                 $eloquent->save();
+
+                $dataLog = [
+                    'log_type' => 'create',
+                    'model' => 'user',
+                    'message' => 'menambah data pengguna "' . $eloquent->name . '" di master pengguna',
+                    'data' => json_encode($eloquent)
+                ];
+                ActivityLogs::createLogs($dataLog);
+
                 DB::connection('mysql')->commit();
                 return response()->json(['success' => true, 'message' => 'Berhasil menambah data pengguna']);
             } else {
@@ -55,8 +65,17 @@ class DataController extends Controller
                     $eloquent->password = bcrypt(request()->input('password'));
                 }
                 $eloquent->save();
+
+                $dataLog = [
+                    'log_type' => 'update',
+                    'model' => 'user',
+                    'message' => 'mengedit data pengguna "' . $eloquent->name . '" di master pengguna',
+                    'data' => json_encode($eloquent)
+                ];
+                ActivityLogs::createLogs($dataLog);
+
                 DB::connection('mysql')->commit();
-                return response()->json(['success' => true, 'message' => 'Berhasil mengubah data pengguna']);
+                return response()->json(['success' => true, 'message' => 'Berhasil mengedit data pengguna']);
             }
         } catch (\Exception $e) {
             DB::connection('mysql')->rollback();
@@ -71,6 +90,14 @@ class DataController extends Controller
 
             $data = User::findOrFail($request->input('id'));
             $data->delete();
+
+            $dataLog = [
+                'log_type' => 'delete',
+                'model' => 'user',
+                'message' => 'menghapus data pengguna "' . $data->name . '" di master pengguna',
+                'data' => json_encode($data)
+            ];
+            ActivityLogs::createLogs($dataLog);
 
             DB::connection('mysql')->commit();
             return back()->with('success', 'Berhasil menghapus pengguna');

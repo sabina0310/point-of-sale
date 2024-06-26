@@ -13,7 +13,7 @@ class ReceiptController extends Controller
 {
     public function generateReceipt(Request $request)
     {
-        $data['sale'] = Sale::with('SaleDetailsWithProduct')->where('invoice_number', $request->invoice_number)->first();
+        $data['sale'] = Sale::with('SaleDetailsWithProduct')->with('user')->where('invoice_number', $request->invoice_number)->first();
         // dd($data);
         $pdf = PDF::loadView('export.generateReceipt', $data);
         $pdf->setPaper(['0', '0', '377.9527559', '2500']);

@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLogs;
 use Illuminate\Support\Facades\Validator;
 
 class DataController extends Controller
@@ -36,13 +37,31 @@ class DataController extends Controller
                 $eloquent = new Category;
                 $eloquent->name = request()->input('name');
                 $eloquent->save();
+
+                $dataLog = [
+                    'log_type' => 'create',
+                    'model' => 'category',
+                    'message' => 'menambah data kategori "' . $eloquent->name . '" ke dalam master kategori',
+                    'data' => json_encode($eloquent)
+                ];
+                ActivityLogs::createLogs($dataLog);
+
                 DB::connection('mysql')->commit();
+
                 return response()->json(['success' => true, 'message' => 'Berhasil menambah data kategori']);
             } else {
                 $eloquent->name = request()->input('name');
                 $eloquent->save();
+                $dataLog = [
+                    'log_type' => 'update',
+                    'model' => 'category',
+                    'message' => 'mengedit data kategori "' . $eloquent->name . '" di master kategori',
+                    'data' => json_encode($eloquent)
+                ];
+                ActivityLogs::createLogs($dataLog);
+
                 DB::connection('mysql')->commit();
-                return response()->json(['success' => true, 'message' => 'Berhasil mengubah data kategori']);
+                return response()->json(['success' => true, 'message' => 'Berhasil mengedit data kategori']);
             }
         } catch (\Exception $e) {
             DB::connection('mysql')->rollback();
@@ -76,6 +95,13 @@ class DataController extends Controller
             $data = Category::findOrFail($request->input('id'));
 
             $data->delete();
+            $dataLog = [
+                'log_type' => 'delete',
+                'model' => 'category',
+                'message' => 'menghapus data kategori "' . $data->name . '" di master kategori',
+                'data' => json_encode($data)
+            ];
+            ActivityLogs::createLogs($dataLog);
 
             DB::connection('mysql')->commit();
             return back()->with('success', 'Berhasil menghapus kategori');

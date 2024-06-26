@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SaleHistory;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\SaleDetail;
+use App\Models\ActivityLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -27,6 +28,15 @@ class DataController extends Controller
 
             $data->delete();
             $dataSaleDetail->delete();
+
+            $dataLog = [
+                'log_type' => 'delete',
+                'model' => 'sale',
+                'message' => 'menghapus data "' . $data->invoice_number . '" di riwayat transaksi penjualan',
+                'data' => json_encode($data)
+            ];
+
+            ActivityLogs::createLogs($dataLog);
 
             DB::connection('mysql')->commit();
             return back()->with('success', 'Berhasil menghapus penjualan');

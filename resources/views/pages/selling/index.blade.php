@@ -150,7 +150,8 @@
                 },
                 error: function(error) {
                     Swal.fire({
-                        title: error.responseJSON.errors,
+                        title: 'Gagal',
+                        message: error.responseJSON.errors,
                         icon: "error"
                     });
                     console.error('Terjadi kesalahan: ', error);
@@ -199,7 +200,7 @@
 
             if (paymentAmount == 0 || paymentAmount == '') {
                 Swal.fire({
-                    title: "Error!",
+                    title: "Gagal!",
                     text: "Masukkan jumlah pembayaran!",
                     icon: "error"
                 });
@@ -208,7 +209,7 @@
 
             if (paymentAmount < totalAmount) {
                 Swal.fire({
-                    title: "Error!",
+                    title: "Gagal!",
                     text: "Jumlah pembayaran kurang!",
                     icon: "error"
                 });

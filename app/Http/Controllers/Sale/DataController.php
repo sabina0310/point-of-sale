@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Sale;
 
 use PDO;
-use App\Models\Product;
 use App\Models\Sale;
-use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Models\SaleDetail;
+use App\Models\ActivityLogs;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DataController extends Controller
 {
@@ -67,6 +69,8 @@ class DataController extends Controller
                 $eloquent->total_price = $total_price;
                 $eloquent->total_profit = $total_profit;
                 $eloquent->status = 'pending';
+                $eloquent->created_by = Auth::id();
+                $eloquent->updated_by = Auth::id();
                 $eloquent->save();
 
                 $saleDetail = new SaleDetail;
@@ -76,12 +80,24 @@ class DataController extends Controller
                 $saleDetail->total_price = $eloquent->total_price;
                 $saleDetail->total_profit = $eloquent->total_profit;
                 $saleDetail->save();
+
+                $dataLog = [
+                    'log_type' => 'create',
+                    'model' => 'sale',
+                    'message' => 'menambah data "' . $eloquent->invoice_number . '" di transaksi penjualan dengan status pembayaran pending',
+                    'data' => json_encode($eloquent)
+                ];
+                ActivityLogs::createLogs($dataLog);
+
                 DB::connection('mysql')->commit();
             } else {
 
                 $eloquentSaleDetail = SaleDetail::where('sale_id', $eloquent->id)->where('product_id', $product_id)->first();
 
                 if (!$eloquentSaleDetail) {
+                    if ($quantity > $eloquentProduct->stock) {
+                        return response()->json(['errors' => 'Jumlah produk melebihi stok'], 422);
+                    }
                     $saleDetail = new SaleDetail;
                     $saleDetail->sale_id = $eloquent->id;
                     $saleDetail->product_id = $product_id;
@@ -92,6 +108,7 @@ class DataController extends Controller
 
                     $eloquent->total_price += $saleDetail->total_price;
                     $eloquent->total_profit += $saleDetail->total_profit;
+                    $eloquent->updated_by = Auth::id();
                     $eloquent->save();
                 } else {
                     $totalQuantity = $eloquentSaleDetail->quantity + $quantity;
@@ -106,6 +123,7 @@ class DataController extends Controller
 
                     $eloquent->total_price += $total_price;
                     $eloquent->total_profit += $total_profit;
+                    $eloquent->updated_by = Auth::id();
                     $eloquent->save();
                 }
 
@@ -140,7 +158,16 @@ class DataController extends Controller
 
             $eloquent->status = 'success';
             $eloquent->payment_amount = $payment_amount;
+            $eloquent->updated_by = Auth::id();
             $eloquent->save();
+
+            $dataLog = [
+                'log_type' => 'update',
+                'model' => 'sale',
+                'message' => 'mengupdate data "' . $eloquent->invoice_number . '" di transaksi penjualan dengan status pembayaran sukses',
+                'data' => json_encode($eloquent)
+            ];
+            ActivityLogs::createLogs($dataLog);
 
             DB::connection('mysql')->commit();
 
@@ -165,6 +192,14 @@ class DataController extends Controller
             SaleDetail::where('sale_id', $data->id)->delete();
 
             $data->delete();
+
+            $dataLog = [
+                'log_type' => 'delete',
+                'model' => 'sale',
+                'message' => 'membatalkan transaksi "' . $data->invoice_number . '" di transaksi penjualan',
+                'data' => json_encode($data)
+            ];
+            ActivityLogs::createLogs($dataLog);
 
             DB::connection('mysql')->commit();
             return response()->json([
@@ -198,6 +233,7 @@ class DataController extends Controller
                 $reload = true;
             }
             $data->delete();
+            
             DB::connection('mysql')->commit();
 
             return response()->json(['success' => true, 'reload' => $reload]);

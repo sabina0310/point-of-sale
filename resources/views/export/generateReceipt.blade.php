@@ -46,7 +46,7 @@
             text-align: right ;
         }
         .table-2 th {
-            padding-left: 65px ;
+            padding-left: 150px ;
         }
         .table-2 td {
             text-align: right ;
@@ -60,7 +60,7 @@
     <div class="container">
         <div class="header">
             <h2 style="margin: 0;">Toko Pimny</h2>
-            <h4 style="margin: 0; font-weight: 400">Jl Karya Timur Gang 1 RT 7 RW 2, Purwantoro, Blimbig, Kota Malang, 65122</h4>
+            <h4 style="margin: 0; font-weight: 400">Jl Karya Timur Gang 1 RT 7 RW 2, Purwantoro, Blimbing, Kota Malang, 65122</h4>
         </div>
         <hr>
         <div class="content">
@@ -71,7 +71,7 @@
                 </tr>
                 <tr>
                     <th>Kasir</th>
-                    <td>Sabina</td>
+                    <td>{{ ucwords($sale->user->name) }}</td>
                 </tr>
                 <tr>
                     <th>Tanggal</th>

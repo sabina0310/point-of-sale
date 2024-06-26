@@ -12,6 +12,7 @@ use App\Http\Controllers\Sale\DataController as SaleDataController;
 use App\Http\Controllers\SaleHistory\ViewController as SaleHistoryViewController;
 use App\Http\Controllers\SaleHistory\DataController as SaleHistoryDataController;
 use App\Http\Controllers\ReportSale\ViewController as ReportSaleViewController;
+use App\Http\Controllers\ActivityLogs\ViewController as ActivityLogsViewController;
 use App\Http\Controllers\User\ViewController as UserViewController;
 use App\Http\Controllers\User\DataController as UserDataController;
 
@@ -83,6 +84,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	Route::middleware('role:admin')->group(function () {
+		Route::prefix('activity-logs')->group(function () {
+			Route::get('/', [ActivityLogsViewController::class, 'index'])->name('activity-logs');
+			Route::get('/filter', [ActivityLogsViewController::class, 'filter'])->name('activity-logs.filter');
+			Route::get('/{id}/detail', [ActivityLogsViewController::class, 'detail'])->name('activity-logs.detail');
+		});
+
 		Route::prefix('report-sale')->group(function () {
 			Route::get('/', [ReportSaleViewController::class, 'index'])->name('report-sale');
 			Route::get('/filter', [ReportSaleViewController::class, 'filter'])->name('report-sale.filter');

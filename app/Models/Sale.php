@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Observers\SaleObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([SaleObserver::class])]
 class Sale extends Model
 {
     use HasFactory;
@@ -22,4 +25,11 @@ class Sale extends Model
     {
         return $this->saleDetails()->with('product');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id')
+            ->select(['id', 'name']);;
+    }
+    
 }

@@ -13,6 +13,7 @@ class Category extends Model
     protected $fillable = [
         'name'
     ];
+    // protected $visible = ['id', 'name'];
 
     public $timestamps = true;
 }

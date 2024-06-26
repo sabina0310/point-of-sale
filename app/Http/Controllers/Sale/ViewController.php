@@ -31,10 +31,9 @@ class ViewController extends Controller
             }
 
             // Pad the number to 4 digits with leading zeros
-            $data['invoice_number'] = 'PMN' . $date . str_pad($number, 4, '0', STR_PAD_LEFT);
+            $data['invoice_number'] = 'RCP' . $date . str_pad($number, 4, '0', STR_PAD_LEFT);
         } else {
             $data['invoice_number'] = $invoice_number;
-            // dd($data);
         }
 
         return view('pages.selling.index', $data);
@@ -86,6 +85,4 @@ class ViewController extends Controller
         }
         return view('pages.selling.index', $data);
     }
-
-    
 }

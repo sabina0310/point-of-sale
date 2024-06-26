@@ -136,7 +136,7 @@
                     errorMessageHTML += '</ul>';
 
                     Swal.fire({
-                        title: 'Error!',
+                        title: 'Gagal!',
                         html: errorMessageHTML,
                         icon: 'error',
                         timer: 3500,
