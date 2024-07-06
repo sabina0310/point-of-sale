@@ -21,8 +21,8 @@ return new class extends Migration
             $table->timestamps();
             $table->integer('created_by')->default(0);
             $table->integer('updated_by')->default(0);
-            // $table->foreign('created_by')->references('id')->on('m_user');
-            // $table->foreign('updated_by')->references('id')->on('m_user');
+            $table->foreign('created_by')->references('id')->on('m_user');
+            $table->foreign('updated_by')->references('id')->on('m_user');
 
         });
     }

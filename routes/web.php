@@ -139,6 +139,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 			Route::post('/create', [ProductDataController::class, 'submit'])->name('product.create-submit');
 			Route::post('/{id}/edit', [ProductDataController::class, 'submit'])->name('product.edit-submit');
+
+			Route::get('/export-format-product', [ProductViewController::class, 'exportFormatProduct']);
+			Route::post('/import-excel', [ProductDataController::class, 'importExcel'])->name('product.import-excel');
 		});
 
 		Route::prefix('category')->group(function () {

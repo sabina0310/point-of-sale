@@ -2,6 +2,8 @@
 
 @section('modal')
     @include('pages.product.partials.modalStock')
+    @include('pages.product.partials.modalImportExcel')
+
 @endsection
 
 @section('content')
@@ -81,6 +83,15 @@
                                 <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
                                 <input type="text" class="form-control" placeholder="Cari nama produk" oninput="filterSearch(this.value)">
                             </div>
+                            <select required class="form-select ms-2" name="select_excel" id="select-excel" onchange="handleSelectChange(this)">
+                                <option value="default" selected disabled>Import Data</option>
+                                <option value="import">
+                                    Import excel
+                                </option>
+                                <option value="download">
+                                    Download format excel
+                                </option>
+                            </select>
                         </div>
                         <a href="{{ route('product.create') }}" class="btn btn-primary btn-sm mb-0"><i class="fas fa-plus me-2"></i>Tambah</a>
                     </div>
@@ -194,6 +205,77 @@
                 timer: 500
                 });
                 $('#delete-form-' + id).submit();
+            }
+        });
+    }
+
+    function handleSelectChange(select) {
+        if (select.value === 'download') {
+            downloadFormatExcel();
+        }
+
+        if (select.value === 'import'){
+            openModalImportExcel();
+        }
+        console.log(select.value);
+    }
+
+    function downloadFormatExcel(){
+        let url = `{{ asset('product/export-format-product') }}?_token={{ csrf_token() }}`;
+        window.open(url, '_blank');
+        $('#select-excel').val('default');
+    }
+
+    function openModalImportExcel(){
+        $('#modal-import-excel').modal('show');
+        $('#select-excel').val('default');
+
+    }
+
+    function submitFormImport(){
+        var form = $('#import-product-form')[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+            url: "{{ route('product.import-excel') }}",
+            method: 'POST',
+            data: formData,
+            processData: false, // prevent jQuery from automatically transforming the data into a query string
+            contentType: false, // prevent jQuery from setting contentType
+            success: function(response) {
+                if (response.success) {
+                    console.log(response);
+                    
+                    // Redirect to /product after successful submission
+                    Swal.fire({
+                        title: "Sukses!",
+                        text: response.message,
+                        icon: "success",
+                        timer: 3500
+                    }).then(() => {
+                            window.location.href = '/product' // Reload the page
+                    });
+                }  else {
+                    console.error('Gagal mendapatkan data dari server');
+                }
+            },
+            error: function(error) {
+                let errorMessages = error.responseJSON.errors;
+                let errorMessageHTML = '<ul style="list-style-type: none;">';
+                
+                // Loop through each error message and create list items
+                $.each(errorMessages, function(key, value) {
+                    errorMessageHTML += '<li>' + value + '</li>';
+                });
+
+                errorMessageHTML += '</ul>';
+
+                Swal.fire({
+                    title: 'Gagal!',
+                    html: errorMessageHTML,
+                    icon: 'error',
+                    timer: 3500,
+                });
             }
         });
     }

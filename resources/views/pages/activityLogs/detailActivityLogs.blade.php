@@ -32,8 +32,8 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="quantity_per_purchase_unit" class="me-2 text-sm col-3">Detail</label>
+                                    <div class="form-group d-flex align-items-start">
+                                        <label for="quantity_per_purchase_unit" class="me-2 text-sm col-2">Detail</label>
                                         <textarea disabled rows="10" class="w-100">
                                             {{ $data->data }}
 

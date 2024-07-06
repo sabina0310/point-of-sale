@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('log_type'); 
-            $table->string('model'); 
+            $table->string('log_type');
+            $table->string('model');
             $table->string('message'); // Description of the log
-            $table->string('data')->nullable(); // Any additional data (before/after)
+            $table->text('data')->nullable(); // Any additional data (before/after)
             $table->integer('user_id'); // User who performed the action
+            $table->foreign('user_id')->references('id')->on('m_user');
             $table->timestamps();
         });
     }

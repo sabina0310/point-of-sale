@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('t_purchase', function (Blueprint $table) {
             $table->id();
-            $table->string('purchase_number');
+            $table->string('purchase_number', 20);
             $table->integer('product_id');
             $table->foreign('product_id')->references('id')->on('m_product');
             $table->integer('purchase_quantity');

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Product;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Exports\ProductExcel;
+use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ViewController extends Controller
 {
@@ -53,5 +55,11 @@ class ViewController extends Controller
             return response()->json(['success' => true, 'data' => $data]);
         }
         return view('pages.product.partials.modalStock', $data);
+    }
+
+    public function exportFormatProduct()
+    {
+        $categories = Category::all();
+        return Excel::download(new ProductExcel($categories), 'format-export-product.xlsx');
     }
 }

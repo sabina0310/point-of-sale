@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/category" id="category-form" method="post" class="">
+      <form id="category-form" method="post">
         @csrf
         <div class="modal-body">
               <input hidden type="text" class="form-control" name="id" id="id">

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'cashier'])->default('admin');
             $table->timestamps();
+
+            $table->index('name');
         });
     }
 

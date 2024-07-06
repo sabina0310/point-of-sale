@@ -28,7 +28,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group d-flex align-items-center">
                                             <label for="purchase_number" class="me-2 text-sm col-3">Nomor Pembelian</label>
-                                            <input required type="text" class="form-control" name="purchase_number" value="{{ $purchase->purchase_number ?? $purchase_number}}"   placeholder="pcs, box, renteng" disabled>
+                                            <input required type="text" class="form-control" id="purchase-number" name="purchase_number" value="{{ $purchase->purchase_number ?? $purchase_number}}"   placeholder="pcs, box, renteng" disabled>
                                         </div>
                                         <div class="form-group d-flex align-items-center">
                                             <label for="category" class="me-2 text-sm col-3">Produk</label>
@@ -97,6 +97,8 @@
     function submitForm(){
         $('#total-price').prop('disabled', false);
         $('#purchase-stock').prop('disabled', false);
+        $('#purchase-number').prop('disabled', false);
+
 
         var currentRoute =  '{{ request()->url() }}';
 
@@ -130,6 +132,8 @@
             error: function(error) {
                 $('#total-price').prop('disabled', true);
                 $('#purchase-stock').prop('disabled', true);
+                $('#purchase-number').prop('disabled', true);
+
                 let errorMessages = error.responseJSON.errors;
                 let errorMessageHTML = '<ul style="list-style-type: none;">';
                 

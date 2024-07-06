@@ -6,11 +6,11 @@
 
 @php
     $options = [
-    'kategori' => 'Kategori',
-    'produk' => 'Produk',
-    'pengguna' => 'Pengguna',
-    'pembelian' => 'Pembelian',
-    'penjualan' => 'Penjualan'
+    'category' => 'Kategori',
+    'product' => 'Produk',
+    'user' => 'Pengguna',
+    'purchase' => 'Pembelian',
+    'sale' => 'Penjualan'
 
 ];
 @endphp
@@ -26,7 +26,7 @@
                         <div class="ms-md-auto pe-md-3 d-flex">
                             <div class="form-group d-flex align-items-center w-100">
                                 <label for="category" class="me-2 text-sm ">Filter Data</label>
-                                <select required class="form-select " name="product_id" aria-label="Default select example" id="product-select" onchange="filterData()">
+                                <select required class="form-select " name="product_id" aria-label="Default select example" id="product-select" onchange="filterSearch(this.value)">
                                     <option selected value="">
                                         Semua
                                     </option>
@@ -72,6 +72,7 @@
         }
 
         function filterSearch(search) {
+            console.log(search);
             filterData(search);
         }
 

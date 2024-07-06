@@ -34,6 +34,7 @@ class ActivityLogs extends Model
                 'data' => isset($data['data']) ? $data['data'] : '',
                 'user_id' => auth() ?  auth()->id() : 0
             ];
+            // dd($payload);
 
             ActivityLogs::create($payload);
 

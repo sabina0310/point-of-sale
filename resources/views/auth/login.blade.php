@@ -16,19 +16,19 @@
                         <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
                             <div class="card card-plain ">
                                 <div class="card-header pb-0 text-start">
-                                    <h4 class="font-weight-bolder">Sign In</h4>
-                                    <p class="mb-0">Enter your email and password to sign in</p>
+                                    <h4 class="font-weight-bolder">Log In</h4>
+                                    <p class="mb-0">Masukkan usernam dan password untuk Login</p>
                                 </div>
                                 <div class="card-body ">
                                     <form role="form" method="POST" action="{{ route('login.perform') }}">
                                         @csrf
                                         @method('post')
                                         <div class="flex flex-col mb-3">
-                                            <input type="text" name="username" class="form-control form-control-lg" value="{{ 'admin' }}" aria-label="Username">
+                                            <input type="text" name="username" class="form-control form-control-lg" placeholder="Username" aria-label="Username">
                                             @error('username') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
                                         </div>
                                         <div class="flex flex-col mb-3">
-                                            <input type="password" name="password" class="form-control form-control-lg" aria-label="Password" value="123" >
+                                            <input type="password" name="password" class="form-control form-control-lg" aria-label="Password" placeholder="Password" >
                                             @error('password') <p class="text-danger text-xs pt-1"> {{$message}} </p>@enderror
                                         </div>
                                         {{-- <div class="form-check form-switch">

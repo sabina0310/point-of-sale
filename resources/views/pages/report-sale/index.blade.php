@@ -23,8 +23,8 @@
                         </div>
                         <div class="d-flex justify-content-center mt-3">
                             <button type="button" class="btn btn-primary btn-sm mb-0 w-12 me-2" onclick="showAll()">Show All</button>
-                            <form action="{{ route('report-sale.export-excel') }}" method="GET" target="_blank" style="display: inline;">
-                            </form>
+                            {{-- <form action="{{ route('report-sale.export-excel') }}" method="GET" target="_blank" style="display: inline;">
+                            </form> --}}
                             <button type="button" class="btn btn-primary btn-sm mb-0 w-12 me-2" onclick="exportExcel()"><i class="fas fa-file-excel me-2"></i>Excel</button>
                             
                         </div>

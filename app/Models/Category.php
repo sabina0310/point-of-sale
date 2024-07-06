@@ -11,7 +11,9 @@ class Category extends Model
     use HasFactory;
     protected $table = 'm_category';
     protected $fillable = [
-        'name'
+        'id',
+        'category_code',
+        'name',
     ];
     // protected $visible = ['id', 'name'];
 

@@ -8,6 +8,8 @@ use App\Models\ActivityLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Imports\ProductImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
 class DataController extends Controller
@@ -90,6 +92,7 @@ class DataController extends Controller
                     'data' => json_encode($eloquent)
                 ];
                 ActivityLogs::createLogs($dataLog);
+                // dd($dataLog);
 
                 DB::connection('mysql')->commit();
                 return response()->json(['success' => true, 'message' => 'Berhasil mengedit data produk']);
@@ -140,5 +143,24 @@ class DataController extends Controller
             DB::connection('mysql')->rollback();
             return $this->error_handler($e);
         }
+    }
+
+    public function importExcel(Request $request)
+    {
+        $import = new ProductImport();
+        Excel::import($import, $request->file('file_excel'));
+
+        // Get imported data
+        $data = $import->getImportedData();
+        
+        $dataLog = [
+            'log_type' => 'create',
+            'model' => 'product',
+            'message' => 'mengimport data produk di master produk',
+            'data' => json_encode($data)
+        ];
+        ActivityLogs::createLogs($dataLog);
+
+        return response()->json(['success' => true, 'message' => 'Berhasil import data produk']);
     }
 }

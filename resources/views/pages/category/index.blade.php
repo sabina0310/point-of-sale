@@ -115,11 +115,11 @@
                                 window.location.href = '/category' // Reload the page
                         });
                             
-                        // Set a timeout to delay the redirection
-                        setTimeout(function() {
-                            window.location.href = '/category';
-                        }, 3500); 
-                        // Show success message using Swal
+                        // // Set a timeout to delay the redirection
+                        // setTimeout(function() {
+                        //     window.location.href = '/category';
+                        // }, 3500); 
+                        // // Show success message using Swal
                     }  else {
                         console.error('Gagal mendapatkan data dari server');
                     }

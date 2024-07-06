@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('m_category', function (Blueprint $table) {
             $table->id();
+            $table->string('category_code', 20);
             $table->string('name', 100);
             $table->timestamps();
 
