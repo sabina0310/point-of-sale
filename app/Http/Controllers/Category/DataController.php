@@ -34,8 +34,15 @@ class DataController extends Controller
             DB::connection('mysql')->beginTransaction();
 
             if (!isset($eloquent)) {
+                $lastRecord = Category::orderBy('id', 'desc')->first();
+                $lastId = $lastRecord ? $lastRecord->id : 0;
+                $newId = $lastId + 1;
+                $newCode = 'K' . str_pad($newId, 3, '0', STR_PAD_LEFT);
+
                 $eloquent = new Category;
+                $eloquent->category_code = $newCode;
                 $eloquent->name = request()->input('name');
+
                 $eloquent->save();
 
                 $dataLog = [

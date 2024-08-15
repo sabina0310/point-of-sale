@@ -18,7 +18,7 @@ class ViewController extends Controller
         $filter = $request->all();
         $data['listUser'] = User::when(!empty($filter['search']), function ($query) use ($filter) {
             return $query->where('name', 'like', '%' . $filter['search'] . '%');
-        })->paginate(2);
+        })->paginate(10);
 
         if ($request->ajax()) {
             return view('pages.user.partials.tableListUser', $data);

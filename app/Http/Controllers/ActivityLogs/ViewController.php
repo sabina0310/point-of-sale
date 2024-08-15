@@ -18,7 +18,7 @@ class ViewController extends Controller
         $filter = $request->all();
         $data['listActivityLogs'] = ActivityLogs::with('user')->when(!empty($filter['search']), function ($query) use ($filter) {
             return $query->where('model', $filter['search']);
-        })->orderBy('id', 'desc')->paginate(10);
+        })->orderBy('id', 'desc')->paginate(20);
 
         if ($request->ajax()) {
             return view('pages.activityLogs.partials.tableListActivityLogs', $data);

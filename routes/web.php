@@ -137,6 +137,9 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::get('/create', [ProductViewController::class, 'form'])->name('product.create');
 			Route::get('/{id}/edit', [ProductViewController::class, 'form'])->name('product.edit');
 
+			Route::get('/{id}/detail', [ProductViewController::class, 'detail'])->name('product.detail');
+
+
 			Route::post('/create', [ProductDataController::class, 'submit'])->name('product.create-submit');
 			Route::post('/{id}/edit', [ProductDataController::class, 'submit'])->name('product.edit-submit');
 

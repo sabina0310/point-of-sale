@@ -30,7 +30,7 @@ class ViewController extends Controller
                 return $query->where('m_product.name', 'like', '%' . $filter['search'] . '%');
             })
             ->orderByDesc('m_product.id')
-            ->paginate(5);
+            ->paginate(10);
 
         if ($request->ajax()) {
             return view('pages.product.partials.tableListProduct', $data);
@@ -45,6 +45,16 @@ class ViewController extends Controller
         $data['product'] = Product::where('id', $id)->first();
 
         return view('pages.product.form', $data);
+    }
+
+    public function detail($id)
+    {
+        $data = Product::where('m_product.id', $id)
+            ->join('m_category', 'm_product.category_id', '=', 'm_category.id')
+            ->select('m_product.*', 'm_category.name as category_name')
+            ->first();
+
+        return view('pages.product.detailProduct', $data);
     }
 
     public function checkStock(Request $request)

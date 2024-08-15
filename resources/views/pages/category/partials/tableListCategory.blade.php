@@ -4,7 +4,9 @@
             <tr>
                 <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 5%">
                     No </th>
-                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 75%">
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="">
+                    Kode Kategori</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 50%">
                     Nama Kategori</th>
                 <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Aksi</th>
             </tr>
@@ -16,6 +18,11 @@
                         <td class="align-middle text-left text-xl font-weight-bold">
                             <span class="ms-3">
                                 {{ $loop->index + 1 + ($listCategory->perPage() * ($listCategory->currentPage() - 1)) }}
+                            </span>
+                        </td>
+                        <td class="align-middle text-left text-xl font-weight-bold">
+                            <span class="ms-3">
+                                {{ $data->category_code }}
                             </span>
                         </td>
                         <td class="align-middle text-left text-xl font-weight-bold">
@@ -40,7 +47,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="2" class="text-center">Tidak ada data</td>
+                    <td colspan="4" class="text-center">Tidak ada data</td>
                 </tr>
             @endif
         </tbody>

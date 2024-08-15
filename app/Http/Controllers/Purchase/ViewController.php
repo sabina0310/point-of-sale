@@ -27,7 +27,7 @@ class ViewController extends Controller
                 return $query->where('m_product.name', 'like', '%' . $filter['search'] . '%');
             })
             ->orderByDesc('t_purchase.date')
-            ->paginate(2);
+            ->paginate(10);
 
         if ($request->ajax()) {
             return view('pages.purchase.partials.tableListPurchase', $data);

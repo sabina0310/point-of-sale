@@ -146,7 +146,9 @@
             var quantity_per_purchase_unit = $('#quantity-per-purchase-unit').val(); 
 
             var value = purchase_price / quantity_per_purchase_unit ;
-            $('#price-per-purchase-item').val(value);    
+            $('#price-per-purchase-item').val(value); 
+
+            calculateProfit();   
         }
 
         function calculateProfit(){
